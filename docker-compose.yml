@@ -1,0 +1,28 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: listle-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    restart: unless-stopped
+    networks:
+      - listle-network
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: listle-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - listle-network
+
+networks:
+  listle-network:
+    driver: bridge
