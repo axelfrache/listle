@@ -7,6 +7,7 @@ import { LeaderboardPage } from "@/features/leaderboard/LeaderboardPage"
 import { ProfilePage } from "@/features/profile/ProfilePage"
 import { StatsPage } from "@/features/stats/StatsPage"
 import { AppLayout } from "@/layouts/AppLayout"
+import { ProtectedRoute } from "@/router/ProtectedRoute"
 
 export function AppRouter() {
   return (
@@ -14,12 +15,14 @@ export function AppRouter() {
       <Routes>
         <Route element={<AppLayout />}>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/play" element={<PlayPage />} />
           <Route path="/leaderboard" element={<LeaderboardPage />} />
-          <Route path="/stats" element={<StatsPage />} />
           <Route path="/login" element={<AuthPage mode="login" />} />
           <Route path="/register" element={<AuthPage mode="register" />} />
-          <Route path="/profile" element={<ProfilePage />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/play" element={<PlayPage />} />
+            <Route path="/stats" element={<StatsPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
