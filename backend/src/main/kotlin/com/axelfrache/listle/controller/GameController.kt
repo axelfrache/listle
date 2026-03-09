@@ -22,7 +22,7 @@ class GameController(
 
     private fun getUserId(principal: UserDetails): String {
         val user = userRepository.findByUsername(principal.username)
-            ?: throw ResourceNotFoundException("User not found")
+            ?: throw ResourceNotFoundException("Utilisateur introuvable")
         return user.id!!
     }
 

@@ -21,7 +21,7 @@ class StatsController(
     @GetMapping("/me/overview")
     fun getMyStatsOverview(@AuthenticationPrincipal userDetails: UserDetails): ResponseEntity<StatsOverviewResponse> {
         val user = userRepository.findByUsername(userDetails.username)
-            ?: throw ResourceNotFoundException("User not found")
+            ?: throw ResourceNotFoundException("Utilisateur introuvable")
             
         return ResponseEntity.ok(statsService.getOverview(user.id!!))
     }
