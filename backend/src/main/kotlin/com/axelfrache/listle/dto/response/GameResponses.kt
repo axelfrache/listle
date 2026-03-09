@@ -18,7 +18,10 @@ data class SubmissionResponse(
 data class GameFinishResponse(
     val gameId: String,
     val finalScore: Int,
-    val foundCount: Int
+    val foundCount: Int,
+    val bestScore: Int,
+    val currentStreak: Int,
+    val percentile: Int
 )
 
 data class GameHistoryItemResponse(

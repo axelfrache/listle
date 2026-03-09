@@ -13,6 +13,7 @@ import java.time.LocalDateTime
 @Repository
 interface GameSessionRepository : JpaRepository<GameSession, String> {
     fun findByUserId(userId: String): List<GameSession>
+    fun findByUserIdAndStatus(userId: String, status: GameStatus): List<GameSession>
     fun findByUserIdOrderByStartedAtDesc(userId: String, pageable: Pageable): Page<GameSession>
     fun countByUserIdAndStatus(userId: String, status: GameStatus): Long
     fun findTopByUserIdAndStatusOrderByScoreDesc(userId: String, status: GameStatus): GameSession?
@@ -25,6 +26,8 @@ interface GameSessionRepository : JpaRepository<GameSession, String> {
 
     fun findTop10ByCategoryIdAndStatusOrderByScoreDesc(categoryId: String, status: GameStatus): List<GameSession>
     fun findTop10ByStatusOrderByScoreDesc(status: GameStatus): List<GameSession>
+    fun findByStatus(status: GameStatus): List<GameSession>
+    fun findByStatusAndStartedAtAfter(status: GameStatus, since: LocalDateTime): List<GameSession>
 
     @Query("SELECT g FROM GameSession g WHERE g.categoryId = :categoryId AND g.status = :status AND g.startedAt >= :since ORDER BY g.score DESC LIMIT 10")
     fun findTop10ByCategoryIdAndStatusAndStartedAtAfterOrderByScoreDesc(

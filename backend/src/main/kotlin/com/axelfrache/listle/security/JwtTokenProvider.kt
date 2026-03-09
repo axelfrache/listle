@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Component
 import java.util.Date
+import java.util.Base64
 import javax.crypto.SecretKey
 
 @Component
@@ -16,7 +17,11 @@ class JwtTokenProvider(
     @Value("\${jwt.expiration-ms}") private val jwtExpirationMs: Long
 ) {
     private fun getSigningKey(): SecretKey {
-        val keyBytes = Decoders.BASE64.decode(jwtSecret)
+        val keyBytes = try {
+            Decoders.BASE64.decode(jwtSecret)
+        } catch (_: Exception) {
+            jwtSecret.toByteArray(Charsets.UTF_8)
+        }
         return Keys.hmacShaKeyFor(keyBytes)
     }
 

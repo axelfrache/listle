@@ -24,10 +24,10 @@ class AuthService(
     @Transactional
     fun register(request: RegisterRequest): AuthResponse {
         if (userRepository.existsByUsername(request.username)) {
-            throw GameLogicException("Username is already taken!")
+            throw GameLogicException("Ce nom d'utilisateur est déjà pris.")
         }
         if (userRepository.existsByEmail(request.email)) {
-            throw GameLogicException("Email is already in use!")
+            throw GameLogicException("Cet e-mail est déjà utilisé.")
         }
 
         val user = User(

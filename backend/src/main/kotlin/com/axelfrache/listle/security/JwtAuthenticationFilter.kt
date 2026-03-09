@@ -32,7 +32,7 @@ class JwtAuthenticationFilter(
                 }
             }
         } catch (e: Exception) {
-            logger.error("Could not set user authentication in security context", e)
+            logger.error("Impossible de définir l'authentification utilisateur dans le contexte de sécurité", e)
         }
 
         filterChain.doFilter(request, response)

@@ -12,22 +12,22 @@ import com.axelfrache.listle.entity.GameSubmission
 import com.axelfrache.listle.exception.GameLogicException
 import com.axelfrache.listle.exception.ResourceNotFoundException
 import com.axelfrache.listle.repository.CategoryWordRepository
-import com.axelfrache.listle.repository.DailyCategoryRepository
 import com.axelfrache.listle.repository.GameSessionRepository
 import com.axelfrache.listle.repository.GameSubmissionRepository
 import com.axelfrache.listle.util.WordNormalizer
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.LocalDate
 import java.time.LocalDateTime
+import kotlin.math.roundToInt
 
 @Service
 class GameService(
     private val gameSessionRepository: GameSessionRepository,
     private val gameSubmissionRepository: GameSubmissionRepository,
-    private val dailyCategoryRepository: DailyCategoryRepository,
-    private val categoryWordRepository: CategoryWordRepository
+    private val dailyCategoryResolverService: DailyCategoryResolverService,
+    private val categoryWordRepository: CategoryWordRepository,
+    private val statsService: StatsService
 ) {
     fun getHistory(userId: String, page: Int, size: Int): GameHistoryResponse {
         val pageable = PageRequest.of(page, size)
@@ -55,9 +55,7 @@ class GameService(
 
     @Transactional
     fun startGame(userId: String): GameStartResponse {
-        val today = LocalDate.now()
-        val dailyCategory = dailyCategoryRepository.findById(today)
-            .orElseThrow { ResourceNotFoundException("No daily category set for today") }
+        val dailyCategory = dailyCategoryResolverService.getOrCreateDailyCategory()
 
         val session = GameSession(
             userId = userId,
@@ -74,21 +72,25 @@ class GameService(
     @Transactional
     fun submitWord(userId: String, gameId: String, request: WordSubmissionRequest): SubmissionResponse {
         val session = gameSessionRepository.findById(gameId)
-            .orElseThrow { ResourceNotFoundException("Game session not found") }
+            .orElseThrow { ResourceNotFoundException("Session de jeu introuvable") }
 
         if (session.userId != userId) {
-            throw GameLogicException("Cannot submit to another user's game")
+            throw GameLogicException("Impossible d'envoyer un mot sur la partie d'un autre joueur")
         }
         if (session.status != GameStatus.ACTIVE) {
-            throw GameLogicException("Game is no longer active")
+            throw GameLogicException("La partie n'est plus active")
         }
         if (LocalDateTime.now().isAfter(session.startedAt.plusSeconds(60))) {
             finishGameInternal(session)
-            throw GameLogicException("Game time has expired")
+            throw GameLogicException("Le temps de la partie est écoulé")
         }
 
-        val normalized = WordNormalizer.normalize(request.word)
-        val isValid = categoryWordRepository.existsByCategoryIdAndNormalizedLabel(session.categoryId, normalized)
+        val candidates = WordNormalizer.candidates(request.word)
+        val matchedNormalized = candidates.firstOrNull {
+            categoryWordRepository.existsByCategoryIdAndNormalizedLabel(session.categoryId, it)
+        }
+        val normalized = matchedNormalized ?: candidates.firstOrNull() ?: ""
+        val isValid = matchedNormalized != null
         var duplicate = false
         var scoreDelta = 0
 
@@ -121,20 +123,33 @@ class GameService(
     @Transactional
     fun finishGame(userId: String, gameId: String): GameFinishResponse {
         val session = gameSessionRepository.findById(gameId)
-            .orElseThrow { ResourceNotFoundException("Game session not found") }
+            .orElseThrow { ResourceNotFoundException("Session de jeu introuvable") }
 
         if (session.userId != userId) {
-            throw GameLogicException("Cannot finish another user's game")
+            throw GameLogicException("Impossible de terminer la partie d'un autre joueur")
         }
 
         if (session.status == GameStatus.ACTIVE) {
             finishGameInternal(session)
         }
 
+        val bestScore = gameSessionRepository.findTopByUserIdAndStatusOrderByScoreDesc(userId, GameStatus.FINISHED)?.score ?: session.score
+        val currentStreak = statsService.getOverview(userId).currentStreak
+        val allScores = gameSessionRepository.findByStatus(GameStatus.FINISHED).map { it.score }
+        val percentile = if (allScores.isEmpty()) {
+            if (session.score > 0) 80 else 50
+        } else {
+            val lowerOrEqual = allScores.count { it <= session.score }
+            ((lowerOrEqual.toDouble() / allScores.size.toDouble()) * 100.0).roundToInt().coerceIn(1, 99)
+        }
+
         return GameFinishResponse(
             gameId = session.id!!,
             finalScore = session.score,
-            foundCount = session.foundCount
+            foundCount = session.foundCount,
+            bestScore = bestScore,
+            currentStreak = currentStreak,
+            percentile = percentile
         )
     }
 

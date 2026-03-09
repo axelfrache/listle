@@ -5,14 +5,12 @@ import com.axelfrache.listle.dto.response.CategoryDetailResponse
 import com.axelfrache.listle.dto.response.DailyCategoryResponse
 import com.axelfrache.listle.exception.ResourceNotFoundException
 import com.axelfrache.listle.repository.CategoryRepository
-import com.axelfrache.listle.repository.DailyCategoryRepository
 import org.springframework.stereotype.Service
-import java.time.LocalDate
 
 @Service
 class CategoryService(
     private val categoryRepository: CategoryRepository,
-    private val dailyCategoryRepository: DailyCategoryRepository
+    private val dailyCategoryResolverService: DailyCategoryResolverService
 ) {
     fun getAllCategories(): List<CategoryResponse> {
         return categoryRepository.findAll().map {
@@ -22,7 +20,7 @@ class CategoryService(
 
     fun getCategoryBySlug(slug: String): CategoryDetailResponse {
         val category = categoryRepository.findBySlug(slug)
-            ?: throw ResourceNotFoundException("Category not found")
+            ?: throw ResourceNotFoundException("Catégorie introuvable")
 
         return CategoryDetailResponse(
             slug = category.slug,
@@ -33,15 +31,12 @@ class CategoryService(
     }
 
     fun getDailyCategory(): DailyCategoryResponse {
-        val today = LocalDate.now()
-        val dailyCategory = dailyCategoryRepository.findById(today)
-            .orElseThrow { ResourceNotFoundException("No daily category set for today") }
-        
+        val dailyCategory = dailyCategoryResolverService.getOrCreateDailyCategory()
         val category = categoryRepository.findById(dailyCategory.categoryId)
-            .orElseThrow { ResourceNotFoundException("Category not found") }
+            .orElseThrow { ResourceNotFoundException("Catégorie introuvable") }
 
         return DailyCategoryResponse(
-            date = today.toString(),
+            date = dailyCategory.date.toString(),
             category = CategoryResponse(slug = category.slug, name = category.name)
         )
     }

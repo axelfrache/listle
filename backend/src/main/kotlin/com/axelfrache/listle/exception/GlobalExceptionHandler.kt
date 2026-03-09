@@ -13,20 +13,20 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException::class)
     fun handleResourceNotFoundException(ex: ResourceNotFoundException): ResponseEntity<Any> {
-        val body = mapOf("error" to "Not Found", "message" to ex.message)
+        val body = mapOf("error" to "Introuvable", "message" to ex.message)
         return ResponseEntity(body, HttpStatus.NOT_FOUND)
     }
 
     @ExceptionHandler(GameLogicException::class)
     fun handleGameLogicException(ex: GameLogicException): ResponseEntity<Any> {
-        val body = mapOf("error" to "Bad Request", "message" to ex.message)
+        val body = mapOf("error" to "Requête invalide", "message" to ex.message)
         return ResponseEntity(body, HttpStatus.BAD_REQUEST)
     }
 
     @ExceptionHandler(Exception::class)
     fun handleGlobalException(ex: Exception): ResponseEntity<Any> {
-        log.error("Unhandled exception: ", ex)
-        val body = mapOf("error" to "Internal Server Error", "message" to "An unexpected error occurred: ${ex.message}")
+        log.error("Exception non gérée: ", ex)
+        val body = mapOf("error" to "Erreur interne du serveur", "message" to "Une erreur inattendue est survenue: ${ex.message}")
         return ResponseEntity(body, HttpStatus.INTERNAL_SERVER_ERROR)
     }
 }

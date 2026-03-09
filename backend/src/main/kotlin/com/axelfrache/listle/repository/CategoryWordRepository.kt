@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository
 interface CategoryWordRepository : JpaRepository<CategoryWord, String> {
     fun existsByCategoryIdAndNormalizedLabel(categoryId: String, normalizedLabel: String): Boolean
     fun countByCategoryId(categoryId: String): Long
+    fun findByCategoryIdOrderByLabelAsc(categoryId: String): List<CategoryWord>
 }
