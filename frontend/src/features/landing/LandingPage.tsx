@@ -37,10 +37,10 @@ export function LandingPage() {
         <div className="flex flex-col justify-center space-y-8">
           <div className="space-y-4">
             <h1 className="font-head text-4xl uppercase leading-[0.9] tracking-[0.08em] text-foreground sm:text-6xl sm:tracking-[0.12em] lg:text-7xl">
-              60 secondes et un thème pour battre le record
+              Un thème… et 60 secondes pour battre le record
             </h1>
             <p className="max-w-2xl text-base leading-7 text-foreground/80 sm:text-lg">
-              Chaque jour, une catégorie. Tu enchaînes les mots, tu marques et tu grimpes au classement.
+              Chaque jour, une nouvelle catégorie. Trouve un maximum de mots, marque des points et grimpe dans le classement.
             </p>
           </div>
           <div>
@@ -65,21 +65,21 @@ export function LandingPage() {
                 </div>
               </div>
               <p className="text-sm font-bold leading-6 text-black">
-                Saisis un maximum de {snapshot.category.name.toLowerCase()} en 60 secondes.
+                Trouve un maximum de {snapshot.category.name.toLowerCase()} en 60 secondes.
               </p>
 
               <div className="grid grid-cols-2 gap-3 mt-4">
                 <div className="border-2 border-black bg-white p-3 shadow-[4px_4px_0_0_#000]">
                   <div className="text-xs font-black uppercase tracking-[0.2em] text-black/60">
-                    Chrono
+                    Temps
                   </div>
                   <div className="mt-1 font-head text-xl uppercase text-black">60s</div>
                 </div>
                 <div className="border-2 border-black bg-[#ff7a59] p-3 shadow-[4px_4px_0_0_#000]">
                   <div className="text-xs font-black uppercase tracking-[0.2em] text-black/70">
-                    Gain
+                    Score
                   </div>
-                  <div className="mt-1 font-head text-xl uppercase text-black">1 pt / mot</div>
+                  <div className="mt-1 font-head text-xl uppercase text-black">+1 point par mot</div>
                 </div>
               </div>
             </Card.Content>
@@ -89,7 +89,7 @@ export function LandingPage() {
             <Card.Content className="grid gap-4 p-4 sm:grid-cols-2 sm:p-6">
               <div>
                 <div className="text-xs font-black uppercase tracking-[0.2em] text-black/60">
-                  Ta série
+                  Série actuelle
                 </div>
                 <div className="mt-2 flex items-center gap-3">
                   <Flame className="size-7 text-[#ff7a59]" />
@@ -100,7 +100,7 @@ export function LandingPage() {
               </div>
               <div>
                 <div className="text-xs font-black uppercase tracking-[0.2em] text-black/60">
-                  Meilleur score du jour
+                  Record du jour
                 </div>
                 <div className="mt-2 font-head text-3xl uppercase text-black sm:text-4xl">
                   {snapshot.userBestScore}
@@ -114,8 +114,8 @@ export function LandingPage() {
       <section className="grid gap-6 lg:grid-cols-3">
         <Card className="border-black bg-white shadow-[8px_8px_0_0_#000] sm:shadow-[10px_10px_0_0_#000]">
           <Card.Header className="border-b-2 border-black">
-            <Card.Title className="text-black">Top joueurs du jour</Card.Title>
-            <Card.Description>Les plus rapides sur la catégorie en cours.</Card.Description>
+            <Card.Title className="text-black">Meilleurs joueurs du jour</Card.Title>
+            <Card.Description>Les meilleurs scores sur la catégorie du jour.</Card.Description>
           </Card.Header>
           <Card.Content className="space-y-3">
             {snapshot.leaderboardPreview.map((entry) => (
@@ -140,21 +140,21 @@ export function LandingPage() {
         <Card className="border-black bg-[#fff7d6] shadow-[8px_8px_0_0_#000] sm:shadow-[10px_10px_0_0_#000] lg:col-span-2">
           <Card.Header className="border-b-2 border-black">
             <Card.Title className="text-black">Règles du jeu</Card.Title>
-            <Card.Description>Simple à comprendre, exigeant à maîtriser.</Card.Description>
+            <Card.Description>Facile à comprendre, difficile à battre.</Card.Description>
           </Card.Header>
           <Card.Content className="grid gap-4 p-4 sm:grid-cols-3 sm:p-6">
             {[
               {
                 title: "Découvre la catégorie",
-                body: "Un nouveau thème apparaît chaque jour, pensé pour la mémoire rapide.",
+                body: "Une nouvelle catégorie apparaît chaque jour.",
               },
               {
-                title: "Saisis vite",
-                body: "Enchaîne les mots sans t'arrêter. Les bonnes réponses scorent instantanément.",
+                title: "Trouve vite",
+                body: "Enchaîne les mots sans t'arrêter. Chaque bonne réponse marque immédiatement.",
               },
               {
-                title: "Monte au classement",
-                body: "Compare ta manche aux leaders du jour et fais durer ta série.",
+                title: "Grimpe dans le classement",
+                body: "Compare ton score aux meilleurs joueurs et fais durer ta série.",
               },
             ].map((item, index) => (
               <div key={item.title} className="space-y-3 border-2 border-black bg-white p-4 shadow-[4px_4px_0_0_#000]">
