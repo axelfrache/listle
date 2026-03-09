@@ -27,7 +27,7 @@ export function NavBar() {
 
   return (
     <header className="sticky top-0 z-40 border-b-2 border-black bg-[#10131d]/90 backdrop-blur">
-      <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8">
+      <div className="relative mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-3">
           <LogoMark />
           <button
@@ -84,11 +84,11 @@ export function NavBar() {
           <div className="md:hidden">
             <button
               type="button"
-              className="fixed inset-x-0 bottom-0 top-[76px] z-40 bg-black/65"
+              className="fixed inset-0 z-30 bg-black/65"
               onClick={() => setMobileOpen(false)}
               aria-label="Fermer le menu mobile"
             />
-            <div className="fixed inset-x-3 bottom-3 top-[88px] z-50 overflow-y-auto border-2 border-black bg-[#fff7d6] p-3 shadow-[8px_8px_0_0_#000]">
+            <div className="absolute inset-x-0 top-full z-40 mt-3 max-h-[calc(100vh-7rem)] overflow-y-auto border-2 border-black bg-[#fff7d6] p-3 shadow-[8px_8px_0_0_#000]">
               <div className="grid grid-cols-1 gap-2">
                 {links.map((link) => (
                   <NavLink
