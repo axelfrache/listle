@@ -7,6 +7,26 @@ services:
       - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+      - DATABASE_URL=${DATABASE_URL:-jdbc:postgresql://db:5432/listle}
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - JWT_SECRET=${JWT_SECRET:-defaultSecretKeyForLocalDevWithAtLeast256bitsLength}
+      - JWT_EXPIRATION_MS=${JWT_EXPIRATION_MS:-86400000}
+    restart: unless-stopped
+    networks:
+      - listle-network
+
+  db:
+    image: postgres:18-alpine
+    container_name: listle-db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: listle
+    ports:
+      - "5432:5432"
+    volumes:
+      - listle-data:/var/lib/postgresql/data
     restart: unless-stopped
     networks:
       - listle-network
@@ -26,3 +46,6 @@ services:
 networks:
   listle-network:
     driver: bridge
+
+volumes:
+  listle-data:
