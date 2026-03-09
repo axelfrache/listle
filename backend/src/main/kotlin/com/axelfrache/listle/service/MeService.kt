@@ -108,7 +108,7 @@ class MeService(
         return MeProfileResponse(
             username = user.username,
             joinedAt = user.createdAt.toLocalDate().toString(),
-            tagline = "Joueur Listle authentifié.",
+            tagline = "Joueur Word Clash authentifié.",
             avatarLetters = avatarLetters,
             badges = listOf(
                 MeAchievementResponse(

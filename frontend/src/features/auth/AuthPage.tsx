@@ -50,7 +50,7 @@ export function AuthPage({ mode }: AuthPageProps) {
       <Card className="border-black bg-[#ffe45e] shadow-[8px_8px_0_0_#000] sm:shadow-[12px_12px_0_0_#000]">
         <Card.Content className="flex h-full flex-col justify-between gap-8 p-5 text-black sm:p-8">
           <div className="space-y-5">
-            <Badge tone="dark">Accès Listle</Badge>
+            <Badge tone="dark">Accès Word Clash</Badge>
             <h1 className="font-head text-4xl uppercase leading-[0.9] tracking-[0.08em] sm:text-6xl sm:tracking-[0.12em]">
               {isRegister ? "Crée ton pseudo" : "Reprends le sprint"}
             </h1>
