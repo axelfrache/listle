@@ -1,4 +1,4 @@
-package me.axelfrache.listle
+package com.axelfrache.listle
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
