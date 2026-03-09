@@ -10,7 +10,7 @@ export const categories: Category[] = [
   {
     id: "fruits",
     name: "Fruits",
-    description: "Name as many fresh, sweet, and tart fruits as you can.",
+    description: "Saisis un maximum de fruits frais, sucrés et acidulés.",
     accent: "#ff7a59",
     words: [
       "apple",
@@ -45,8 +45,8 @@ export const categories: Category[] = [
   },
   {
     id: "animals",
-    name: "Animals",
-    description: "Fast paws, wings, scales, or fins. Fill the board with fauna.",
+    name: "Animaux",
+    description: "Pattes, ailes, écailles ou nageoires. Remplis le tableau de faune.",
     accent: "#00c2a8",
     words: [
       "tiger",
@@ -79,8 +79,8 @@ export const categories: Category[] = [
   },
   {
     id: "countries",
-    name: "Countries",
-    description: "Travel the map fast. Type recognized sovereign countries only.",
+    name: "Pays",
+    description: "Parcours la carte rapidement. Saisis uniquement des pays souverains reconnus.",
     accent: "#ffd54f",
     words: [
       "france",
@@ -116,14 +116,14 @@ const dailyLeaderboard: LeaderboardEntry[] = [
   { rank: 1, username: "LexiByte", score: 24, streak: 19 },
   { rank: 2, username: "ArcadeAsh", score: 22, streak: 8 },
   { rank: 3, username: "WordMancer", score: 20, streak: 13 },
-  { rank: 4, username: "You", score: 18, streak: 6, isCurrentUser: true },
+  { rank: 4, username: "TOI", score: 18, streak: 6, isCurrentUser: true },
   { rank: 5, username: "NovaKeys", score: 17, streak: 5 },
   { rank: 6, username: "TypeSprint", score: 15, streak: 4 },
 ]
 
 const weeklyLeaderboard: LeaderboardEntry[] = [
   { rank: 1, username: "LexiByte", score: 134, streak: 19 },
-  { rank: 2, username: "You", score: 122, streak: 6, isCurrentUser: true },
+  { rank: 2, username: "TOI", score: 122, streak: 6, isCurrentUser: true },
   { rank: 3, username: "ArcadeAsh", score: 118, streak: 8 },
   { rank: 4, username: "WordMancer", score: 110, streak: 13 },
   { rank: 5, username: "NovaKeys", score: 102, streak: 5 },
@@ -134,7 +134,7 @@ const globalLeaderboard: LeaderboardEntry[] = [
   { rank: 1, username: "LexiByte", score: 1680, streak: 19 },
   { rank: 2, username: "WordMancer", score: 1521, streak: 13 },
   { rank: 3, username: "ArcadeAsh", score: 1455, streak: 8 },
-  { rank: 4, username: "You", score: 1368, streak: 6, isCurrentUser: true },
+  { rank: 4, username: "TOI", score: 1368, streak: 6, isCurrentUser: true },
   { rank: 5, username: "NovaKeys", score: 1292, streak: 5 },
   { rank: 6, username: "TypeSprint", score: 1214, streak: 4 },
 ]
@@ -147,36 +147,36 @@ const stats: UserStats = {
   totalWordsFound: 739,
   strongestCategories: [
     { category: "Fruits", averageScore: 18.2, bestScore: 23 },
-    { category: "Countries", averageScore: 16.8, bestScore: 21 },
-    { category: "Animals", averageScore: 15.1, bestScore: 20 },
+    { category: "Pays", averageScore: 16.8, bestScore: 21 },
+    { category: "Animaux", averageScore: 15.1, bestScore: 20 },
   ],
   recentHistory: [
     { date: "Mar 09", category: "Fruits", score: 18, percentile: 86 },
-    { date: "Mar 08", category: "Trees", score: 14, percentile: 71 },
-    { date: "Mar 07", category: "Countries", score: 19, percentile: 91 },
-    { date: "Mar 06", category: "Animals", score: 16, percentile: 79 },
+    { date: "Mar 08", category: "Arbres", score: 14, percentile: 71 },
+    { date: "Mar 07", category: "Pays", score: 19, percentile: 91 },
+    { date: "Mar 06", category: "Animaux", score: 16, percentile: 79 },
     { date: "Mar 05", category: "Instruments", score: 12, percentile: 64 },
   ],
   weeklyTrend: [
-    { label: "Mon", value: 12 },
-    { label: "Tue", value: 14 },
-    { label: "Wed", value: 15 },
-    { label: "Thu", value: 13 },
-    { label: "Fri", value: 17 },
-    { label: "Sat", value: 19 },
-    { label: "Sun", value: 18 },
+    { label: "Lun", value: 12 },
+    { label: "Mar", value: 14 },
+    { label: "Mer", value: 15 },
+    { label: "Jeu", value: 13 },
+    { label: "Ven", value: 17 },
+    { label: "Sam", value: 19 },
+    { label: "Dim", value: 18 },
   ],
 }
 
 const profile: UserProfile = {
-  username: "You",
+  username: "TOI",
   joinedAt: "2025-11-03",
-  tagline: "Daily word hunter with a weakness for fast categories.",
-  avatarLetters: "YO",
+  tagline: "Chasseur de mots quotidien avec un faible pour les catégories rapides.",
+  avatarLetters: "TO",
   badges: [
-    { id: "1", label: "6-Day Streak", description: "Played six daily rounds in a row" },
-    { id: "2", label: "Fruit Frenzy", description: "Reached 20 words in Fruits" },
-    { id: "3", label: "Top 5 Daily", description: "Finished in the daily top five" },
+    { id: "1", label: "Série de 6 jours", description: "Six manches quotidiennes jouées d'affilée" },
+    { id: "2", label: "Folie des fruits", description: "A atteint 20 mots dans la catégorie Fruits" },
+    { id: "3", label: "Top 5 quotidien", description: "A terminé dans le top 5 quotidien" },
   ],
   stats: {
     averageScore: stats.averageScore,
@@ -188,7 +188,7 @@ const profile: UserProfile = {
 
 export const dashboardData: DashboardData = {
   snapshot: {
-    date: "March 9, 2026",
+    date: "9 mars 2026",
     category: categories[0],
     userBestScore: 23,
     userStreak: 6,

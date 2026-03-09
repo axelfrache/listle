@@ -6,12 +6,12 @@ import { Card } from "@/components/retroui/Card"
 import { Loader } from "@/components/ui/Loader"
 
 import { useAsyncData } from "@/hooks/useAsyncData"
-import { fetchDashboardData } from "@/lib/mock-api"
+import { fetchDashboardData } from "@/lib/api"
 
 export function LandingPage() {
-  const { data, loading } = useAsyncData(fetchDashboardData, [])
+  const { data, loading, error } = useAsyncData(fetchDashboardData, [])
 
-  if (loading || !data) {
+  if (loading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
         <Loader />
@@ -19,82 +19,90 @@ export function LandingPage() {
     )
   }
 
+  if (error || !data) {
+    return (
+      <div className="flex min-h-[50vh] items-center justify-center">
+        <div className="border-2 border-black bg-white px-6 py-4 text-black shadow-[6px_6px_0_0_#000]">
+          Impossible de charger les données d'accueil.
+        </div>
+      </div>
+    )
+  }
+
   const { snapshot } = data
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-8 sm:space-y-10">
       <section className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
         <div className="flex flex-col justify-center space-y-8">
           <div className="space-y-4">
-            <h1 className="font-head text-6xl uppercase leading-[0.9] tracking-[0.12em] text-foreground sm:text-7xl">
-              Type fast.
-              <br />
-              Rank higher.
+            <h1 className="font-head text-4xl uppercase leading-[0.9] tracking-[0.08em] text-foreground sm:text-6xl sm:tracking-[0.12em] lg:text-7xl">
+              60 secondes et un thème pour battre le record
             </h1>
-            <p className="max-w-2xl text-lg leading-7 text-foreground/80">
-              Listle turns one category into a 60-second arcade sprint.
+            <p className="max-w-2xl text-base leading-7 text-foreground/80 sm:text-lg">
+              Chaque jour, une catégorie. Tu enchaînes les mots, tu marques et tu grimpes au classement.
             </p>
           </div>
           <div>
             <Button asChild size="lg" className="w-full sm:w-auto">
-              <Link to="/play">Play today&apos;s round</Link>
+              <Link to="/play">Jouer la manche du jour</Link>
             </Button>
           </div>
         </div>
 
         <div className="grid gap-6">
-          <Card className="border-black bg-[#68f2a3] shadow-[12px_12px_0_0_#000]">
-            <Card.Content className="space-y-4 p-6">
+          <Card className="border-black bg-[#68f2a3] shadow-[8px_8px_0_0_#000] sm:shadow-[12px_12px_0_0_#000]">
+            <Card.Content className="space-y-4 p-4 sm:p-6">
               <div className="flex items-center gap-3">
                 <Gauge className="size-6 text-black" />
                 <div>
                   <div className="text-xs font-black uppercase tracking-[0.2em] text-black/60">
-                    Category today
+                    Catégorie du jour
                   </div>
-                  <div className="font-head text-3xl uppercase text-black">
+                  <div className="font-head text-2xl uppercase text-black sm:text-3xl">
                     {snapshot.category.name}
                   </div>
                 </div>
               </div>
               <p className="text-sm font-bold leading-6 text-black">
-                Type as many {snapshot.category.name.toLowerCase()} as you can in 60 seconds.
+                Saisis un maximum de {snapshot.category.name.toLowerCase()} en 60 secondes.
               </p>
 
               <div className="grid grid-cols-2 gap-3 mt-4">
                 <div className="border-2 border-black bg-white p-3 shadow-[4px_4px_0_0_#000]">
                   <div className="text-xs font-black uppercase tracking-[0.2em] text-black/60">
-                    Timer
+                    Chrono
                   </div>
                   <div className="mt-1 font-head text-xl uppercase text-black">60s</div>
                 </div>
                 <div className="border-2 border-black bg-[#ff7a59] p-3 shadow-[4px_4px_0_0_#000]">
                   <div className="text-xs font-black uppercase tracking-[0.2em] text-black/70">
-                    Reward
+                    Gain
                   </div>
-                  <div className="mt-1 font-head text-xl uppercase text-black">1 pt / word</div>
+                  <div className="mt-1 font-head text-xl uppercase text-black">1 pt / mot</div>
                 </div>
               </div>
             </Card.Content>
           </Card>
 
-          <Card className="border-black bg-white shadow-[12px_12px_0_0_#000]">
-            <Card.Content className="grid gap-4 p-6 sm:grid-cols-2">
+          <Card className="border-black bg-white shadow-[8px_8px_0_0_#000] sm:shadow-[12px_12px_0_0_#000]">
+            <Card.Content className="grid gap-4 p-4 sm:grid-cols-2 sm:p-6">
               <div>
                 <div className="text-xs font-black uppercase tracking-[0.2em] text-black/60">
-                  Your streak
+                  Ta série
                 </div>
                 <div className="mt-2 flex items-center gap-3">
                   <Flame className="size-7 text-[#ff7a59]" />
-                  <span className="font-head text-4xl uppercase text-black">
-                    {snapshot.userStreak} days
+                  <span className="font-head text-3xl uppercase text-black sm:text-4xl">
+                    {snapshot.userStreak} jours
                   </span>
                 </div>
               </div>
               <div>
                 <div className="text-xs font-black uppercase tracking-[0.2em] text-black/60">
-                  Best today
+                  Meilleur score du jour
                 </div>
-                <div className="mt-2 font-head text-4xl uppercase text-black">
+                <div className="mt-2 font-head text-3xl uppercase text-black sm:text-4xl">
                   {snapshot.userBestScore}
                 </div>
               </div>
@@ -104,22 +112,22 @@ export function LandingPage() {
       </section>
 
       <section className="grid gap-6 lg:grid-cols-3">
-        <Card className="border-black bg-white shadow-[10px_10px_0_0_#000]">
+        <Card className="border-black bg-white shadow-[8px_8px_0_0_#000] sm:shadow-[10px_10px_0_0_#000]">
           <Card.Header className="border-b-2 border-black">
-            <Card.Title className="text-black">Top players today</Card.Title>
-            <Card.Description>Fast movers in the current category.</Card.Description>
+            <Card.Title className="text-black">Top joueurs du jour</Card.Title>
+            <Card.Description>Les plus rapides sur la catégorie en cours.</Card.Description>
           </Card.Header>
           <Card.Content className="space-y-3">
             {snapshot.leaderboardPreview.map((entry) => (
               <div
                 key={entry.username}
-                className="flex items-center justify-between border-2 border-black bg-[#f6f3ea] px-4 py-3 shadow-[4px_4px_0_0_#000]"
+                className="flex items-center justify-between gap-3 border-2 border-black bg-[#f6f3ea] px-3 py-3 shadow-[4px_4px_0_0_#000] sm:px-4"
               >
-                <div>
+                <div className="min-w-0">
                   <div className="text-xs font-black uppercase tracking-[0.2em] text-black/50">
                     #{entry.rank}
                   </div>
-                  <div className="font-head text-xl uppercase text-black">
+                  <div className="truncate font-head text-lg uppercase text-black sm:text-xl">
                     {entry.username}
                   </div>
                 </div>
@@ -129,31 +137,31 @@ export function LandingPage() {
           </Card.Content>
         </Card>
 
-        <Card className="border-black bg-[#fff7d6] shadow-[10px_10px_0_0_#000] lg:col-span-2">
+        <Card className="border-black bg-[#fff7d6] shadow-[8px_8px_0_0_#000] sm:shadow-[10px_10px_0_0_#000] lg:col-span-2">
           <Card.Header className="border-b-2 border-black">
-            <Card.Title className="text-black">The Rules</Card.Title>
-            <Card.Description>Simple to learn, hard to master.</Card.Description>
+            <Card.Title className="text-black">Règles du jeu</Card.Title>
+            <Card.Description>Simple à comprendre, exigeant à maîtriser.</Card.Description>
           </Card.Header>
-          <Card.Content className="grid gap-4 p-6 sm:grid-cols-3">
+          <Card.Content className="grid gap-4 p-4 sm:grid-cols-3 sm:p-6">
             {[
               {
-                title: "See the category",
-                body: "One new topic appears every day, tuned for fast recall.",
+                title: "Découvre la catégorie",
+                body: "Un nouveau thème apparaît chaque jour, pensé pour la mémoire rapide.",
               },
               {
-                title: "Type at speed",
-                body: "Enter words continuously. Valid answers score instantly.",
+                title: "Saisis vite",
+                body: "Enchaîne les mots sans t'arrêter. Les bonnes réponses scorent instantanément.",
               },
               {
-                title: "Climb the board",
-                body: "Compare your run with daily leaders and keep your streak alive.",
+                title: "Monte au classement",
+                body: "Compare ta manche aux leaders du jour et fais durer ta série.",
               },
             ].map((item, index) => (
               <div key={item.title} className="space-y-3 border-2 border-black bg-white p-4 shadow-[4px_4px_0_0_#000]">
                 <div className="text-xs font-black uppercase tracking-[0.22em] text-black/50">
                   0{index + 1}
                 </div>
-                <div className="font-head text-2xl uppercase text-black">{item.title}</div>
+                <div className="font-head text-xl uppercase text-black sm:text-2xl">{item.title}</div>
                 <p className="text-sm leading-6 text-black/70">{item.body}</p>
               </div>
             ))}

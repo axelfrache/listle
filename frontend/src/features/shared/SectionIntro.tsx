@@ -20,7 +20,7 @@ export function SectionIntro({
       <div className="max-w-2xl space-y-4">
         <Badge tone="accent">{eyebrow}</Badge>
         <div className="space-y-2">
-          <h1 className="font-head text-4xl uppercase leading-none tracking-[0.1em] text-white sm:text-5xl">
+          <h1 className="font-head text-3xl uppercase leading-none tracking-[0.08em] text-white sm:text-5xl sm:tracking-[0.1em]">
             {title}
           </h1>
           <p className="max-w-xl text-sm leading-6 text-white/75 sm:text-base">
@@ -28,7 +28,7 @@ export function SectionIntro({
           </p>
         </div>
       </div>
-      {action}
+      {action ? <div className="w-full md:w-auto">{action}</div> : null}
     </div>
   )
 }

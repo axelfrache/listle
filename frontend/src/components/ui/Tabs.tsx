@@ -14,7 +14,7 @@ export function Tabs<T extends string>({
   className,
 }: TabsProps<T>) {
   return (
-    <div className={cn("flex flex-wrap gap-3", className)}>
+    <div className={cn("grid w-full grid-cols-1 gap-2 sm:flex sm:flex-wrap sm:gap-3", className)}>
       {items.map((item) => {
         const active = item.value === value
 
@@ -24,7 +24,7 @@ export function Tabs<T extends string>({
             type="button"
             onClick={() => onChange(item.value)}
             className={cn(
-              "min-w-28 border-2 border-black px-4 py-3 text-sm font-black uppercase tracking-[0.18em] transition",
+              "w-full border-2 border-black px-3 py-2.5 text-xs font-black uppercase tracking-[0.16em] transition sm:w-auto sm:min-w-28 sm:px-4 sm:py-3 sm:text-sm sm:tracking-[0.18em]",
               active
                 ? "bg-[#ffe45e] text-black shadow-[6px_6px_0_0_#000]"
                 : "bg-white text-black shadow-[4px_4px_0_0_#000] hover:-translate-y-0.5",

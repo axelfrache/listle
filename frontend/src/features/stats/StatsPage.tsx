@@ -4,12 +4,12 @@ import { Loader } from "@/components/ui/Loader"
 import { MeterBar } from "@/components/ui/MeterBar"
 import { SectionIntro } from "@/features/shared/SectionIntro"
 import { useAsyncData } from "@/hooks/useAsyncData"
-import { fetchUserStats } from "@/lib/mock-api"
+import { fetchUserStats } from "@/lib/api"
 
 export function StatsPage() {
-  const { data, loading } = useAsyncData(fetchUserStats, [])
+  const { data, loading, error } = useAsyncData(fetchUserStats, [])
 
-  if (loading || !data) {
+  if (loading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
         <Loader />
@@ -17,24 +17,34 @@ export function StatsPage() {
     )
   }
 
+  if (error || !data) {
+    return (
+      <div className="flex min-h-[50vh] items-center justify-center">
+        <div className="border-2 border-black bg-white px-6 py-4 text-black shadow-[6px_6px_0_0_#000]">
+          Impossible de charger les statistiques pour le moment.
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="space-y-8">
       <SectionIntro
-        eyebrow="Personal progression"
-        title="Stats"
-        description="A quick, motivating view of how your daily vocabulary sprint is trending."
+        eyebrow="Progression personnelle"
+        title="Statistiques"
+        description="Une vue rapide et motivante de ta progression sur les sprints quotidiens."
       />
 
       <section className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
         {[
-          { label: "Average score", value: data.averageScore },
-          { label: "Best score", value: data.bestScore },
-          { label: "Games played", value: data.gamesPlayed },
-          { label: "Current streak", value: data.currentStreak },
+          { label: "Score moyen", value: data.averageScore },
+          { label: "Meilleur score", value: data.bestScore },
+          { label: "Parties jouées", value: data.gamesPlayed },
+          { label: "Série en cours", value: data.currentStreak },
         ].map((item, index) => (
           <Card
             key={item.label}
-            className={`border-black shadow-[10px_10px_0_0_#000] ${
+            className={`border-black shadow-[8px_8px_0_0_#000] sm:shadow-[10px_10px_0_0_#000] ${
               index % 2 === 0 ? "bg-white" : "bg-[#ffe45e]"
             }`}
           >
@@ -42,17 +52,17 @@ export function StatsPage() {
               <div className="text-xs font-black uppercase tracking-[0.2em] text-black/60">
                 {item.label}
               </div>
-              <div className="font-head text-5xl uppercase">{item.value}</div>
+              <div className="font-head text-4xl uppercase sm:text-5xl">{item.value}</div>
             </Card.Content>
           </Card>
         ))}
       </section>
 
       <section className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
-        <Card className="border-black bg-white shadow-[12px_12px_0_0_#000]">
+        <Card className="border-black bg-white shadow-[8px_8px_0_0_#000] sm:shadow-[12px_12px_0_0_#000]">
           <Card.Header className="border-b-2 border-black">
-            <Card.Title className="text-black">Weekly rhythm</Card.Title>
-            <Card.Description>Recent scores across the last seven sessions.</Card.Description>
+            <Card.Title className="text-black">Rythme hebdomadaire</Card.Title>
+            <Card.Description>Scores récents sur les sept dernières sessions.</Card.Description>
           </Card.Header>
           <Card.Content className="space-y-4">
             {data.weeklyTrend.map((point, index) => (
@@ -71,11 +81,11 @@ export function StatsPage() {
           </Card.Content>
         </Card>
 
-        <Card className="border-black bg-[#141922] shadow-[12px_12px_0_0_#000]">
+        <Card className="border-black bg-[#141922] shadow-[8px_8px_0_0_#000] sm:shadow-[12px_12px_0_0_#000]">
           <Card.Header className="border-b-2 border-black">
-            <Card.Title className="text-white">Strongest categories</Card.Title>
+            <Card.Title className="text-white">Catégories les plus fortes</Card.Title>
             <Card.Description className="text-white/70">
-              Categories where your speed and recall are currently strongest.
+              Les catégories où ta vitesse et ta mémoire sont les plus efficaces.
             </Card.Description>
           </Card.Header>
           <Card.Content className="space-y-4">
@@ -86,9 +96,9 @@ export function StatsPage() {
               >
                 <div className="flex items-center justify-between gap-3">
                   <div className="font-head text-2xl uppercase">{item.category}</div>
-                  <Badge tone="accent">Best {item.bestScore}</Badge>
+                  <Badge tone="accent">Meilleur {item.bestScore}</Badge>
                 </div>
-                <div className="text-sm text-black/70">Average {item.averageScore} words</div>
+                <div className="text-sm text-black/70">Moyenne {item.averageScore} mots</div>
                 <MeterBar value={item.averageScore} max={25} tone="green" />
               </div>
             ))}
@@ -96,10 +106,10 @@ export function StatsPage() {
         </Card>
       </section>
 
-      <Card className="border-black bg-[#fff7d6] shadow-[12px_12px_0_0_#000]">
+      <Card className="border-black bg-[#fff7d6] shadow-[8px_8px_0_0_#000] sm:shadow-[12px_12px_0_0_#000]">
         <Card.Header className="border-b-2 border-black">
-          <Card.Title className="text-black">Recent history</Card.Title>
-          <Card.Description>A compact log of recent categories and placements.</Card.Description>
+          <Card.Title className="text-black">Historique récent</Card.Title>
+          <Card.Description>Un résumé compact de tes dernières catégories et scores.</Card.Description>
         </Card.Header>
         <Card.Content className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
           {data.recentHistory.map((entry) => (
@@ -111,7 +121,6 @@ export function StatsPage() {
                 <div className="text-xs font-black uppercase tracking-[0.18em] text-black/60">
                   {entry.date}
                 </div>
-                <Badge tone="dark">{entry.percentile}%</Badge>
               </div>
               <div className="font-head text-2xl uppercase">{entry.category}</div>
               <div className="font-head text-4xl uppercase">{entry.score}</div>

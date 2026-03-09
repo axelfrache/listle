@@ -22,7 +22,7 @@ export function useAsyncData<T>(loader: () => Promise<T>, deps: unknown[] = []) 
         if (!active) {
           return
         }
-        setError("Unable to load data.")
+        setError("Impossible de charger les données.")
       })
       .finally(() => {
         if (!active) {
