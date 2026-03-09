@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Timer } from "lucide-react"
 
 import { Button } from "@/components/retroui/Button"
@@ -29,6 +29,7 @@ export function PlayPage() {
   })
   const [result, setResult] = useState<GameResult | null>(null)
   const [submitting, setSubmitting] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     if (!category || gameState !== "active") {
@@ -98,6 +99,9 @@ export function PlayPage() {
 
     setInput("")
     setSubmitting(false)
+    window.requestAnimationFrame(() => {
+      inputRef.current?.focus()
+    })
   }
 
   function handleReset() {
@@ -111,9 +115,9 @@ export function PlayPage() {
 
   return (
     <>
-      <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+      <div className="mx-auto w-full max-w-6xl">
         <section className="space-y-6">
-          <Card className="border-black bg-[#fff7d6] shadow-[12px_12px_0_0_#000]">
+          <Card className="w-full border-black bg-[#fff7d6] shadow-[12px_12px_0_0_#000]">
             <Card.Content className="space-y-6 p-6 sm:p-8">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div className="space-y-3">
@@ -141,6 +145,7 @@ export function PlayPage() {
 
               <form className="space-y-4" onSubmit={handleSubmit}>
                 <Input
+                  ref={inputRef}
                   value={input}
                   onChange={(event) => setInput(event.target.value)}
                   placeholder={gameState === "pre-game" ? "Waiting to start..." : "Type a word and hit Enter"}
@@ -202,28 +207,26 @@ export function PlayPage() {
             </Card.Content>
           </Card>
         </section>
-
-
       </div>
 
       <Dialog open={gameState === "pre-game"}>
-        <Dialog.Content className="border-black bg-[#fff7d6] sm:max-w-md">
-          <Dialog.Header>
-            <div className="text-xs font-black uppercase tracking-[0.3em] text-black/60 mb-2">
+        <Dialog.Content className="w-[min(94vw,680px)] border-black bg-[#fff7d6] p-0">
+          <Dialog.Header className="border-black bg-[#ffe45e] px-5 py-4 sm:px-8 sm:py-5">
+            <div className="mb-2 text-xs font-black uppercase tracking-[0.3em] text-black/60">
               Ready?
             </div>
-            <div className="font-head text-4xl uppercase text-black">
+            <div className="font-head text-4xl uppercase leading-none text-black sm:text-5xl">
               {category.name}
             </div>
-            <Dialog.Description className="text-black/80 font-bold mt-2">
+            <Dialog.Description className="mt-3 max-w-[36ch] text-base font-bold text-black/80">
               Type as many {category.name.toLowerCase()} as you can in 60 seconds. 1 point per valid word.
             </Dialog.Description>
           </Dialog.Header>
-          <div className="mt-6 flex justify-end">
+          <Dialog.Footer className="border-black bg-[#fff7d6] px-5 py-4 sm:px-8 sm:py-5" position="static">
             <Button size="lg" className="w-full sm:w-auto" onClick={handleStartGame}>
               Start today&apos;s round
             </Button>
-          </div>
+          </Dialog.Footer>
         </Dialog.Content>
       </Dialog>
 

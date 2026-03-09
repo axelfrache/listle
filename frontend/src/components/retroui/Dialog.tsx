@@ -3,9 +3,8 @@
 import * as ReactDialog from "@radix-ui/react-dialog";
 import { cn } from "@/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
-import React, { type HTMLAttributes, type ReactNode } from "react";
+import React, { type HTMLAttributes } from "react";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import { X } from "lucide-react";
 
 const Dialog = ReactDialog.Root;
 const DialogTrigger = ReactDialog.Trigger;
@@ -165,7 +164,7 @@ const DialogFooter = ({
 };
 
 const dialogHeaderVariants = cva(
-  "flex items-center justify-between border-b-2 px-4 min-h-12",
+  "border-b-2 px-4 py-4",
   {
     variants: {
       variant: {
@@ -183,17 +182,6 @@ const dialogHeaderVariants = cva(
   },
 );
 
-const DialogHeaderDefaultLayout = ({ children }: { children: ReactNode }) => {
-  return (
-    <>
-      {children}
-      <DialogTrigger title="Close pop-up" className="cursor-pointer" asChild>
-        <X />
-      </DialogTrigger>
-    </>
-  );
-};
-
 interface IDialogHeaderProps
   extends HTMLAttributes<HTMLDivElement>,
   VariantProps<typeof dialogHeaderVariants>,
@@ -204,7 +192,6 @@ const DialogHeader = ({
   className,
   position,
   variant,
-  asChild,
   ...props
 }: IDialogHeaderProps) => {
   return (
@@ -212,11 +199,7 @@ const DialogHeader = ({
       className={cn(dialogHeaderVariants({ position, variant }), className)}
       {...props}
     >
-      {asChild ? (
-        children
-      ) : (
-        <DialogHeaderDefaultLayout>{children}</DialogHeaderDefaultLayout>
-      )}
+      {children}
     </div>
   );
 };
