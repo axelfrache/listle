@@ -106,7 +106,7 @@ export function PlayPage() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
-    if (!input.trim() || gameState !== "active" || !gameId) {
+    if (!input.trim() || gameState !== "active" || !gameId || submitting) {
       return
     }
 
@@ -198,7 +198,7 @@ export function PlayPage() {
                       : "Saisis un mot et valide avec Entrée"
                   }
                   autoFocus={gameState === "active"}
-                  disabled={gameState !== "active" || submitting}
+                  disabled={gameState !== "active"}
                   className="h-14 text-base font-bold uppercase tracking-[0.06em] sm:h-16 sm:text-lg sm:tracking-[0.08em]"
                 />
                 <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
