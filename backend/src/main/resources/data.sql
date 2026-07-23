@@ -36,7 +36,13 @@ VALUES
 ('constellations', 'Constellations', 3, true),
 ('danses', 'Danses', 2, true),
 ('langues', 'Langues', 2, true),
-('epices', 'Epices', 2, true)
+('epices', 'Epices', 2, true),
+('cocktails', 'Cocktails', 2, true),
+('arts_martiaux', 'Arts martiaux', 2, true),
+('monnaies', 'Monnaies', 2, true),
+('meubles', 'Meubles', 1, true),
+('arbres', 'Arbres', 2, true),
+('pierres_precieuses', 'Pierres precieuses', 2, true)
 ) AS v(slug, name, difficulty, active)
 ON CONFLICT (slug) DO UPDATE
 SET name = EXCLUDED.name,
@@ -69,7 +75,13 @@ VALUES
   ('constellations',     'Q8928',  12),
   ('danses',             'Q11639', 12),
   ('langues',            'Q34770', 40),
-  ('epices',             'Q42527', 6)
+  ('epices',             'Q42527', 6),
+  ('cocktails',          'Q134768', 6),
+  ('arts_martiaux',      'Q11417', 10),
+  ('monnaies',           'Q8142',  25),
+  ('meubles',            'Q14745', 12),
+  ('arbres',             'Q10884', 22),
+  ('pierres_precieuses', 'Q83437', 8)
 ) AS s(slug, qid, min_sitelinks)
 WHERE c.slug = s.slug;
 

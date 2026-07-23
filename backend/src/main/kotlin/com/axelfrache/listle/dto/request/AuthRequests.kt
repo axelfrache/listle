@@ -10,3 +10,12 @@ data class RegisterRequest(
     val username: String,
     val password: String
 )
+
+data class UpdateUsernameRequest(
+    val username: String
+)
+
+data class UpdatePasswordRequest(
+    val currentPassword: String,
+    val newPassword: String
+)

@@ -69,7 +69,23 @@ async function requestJson<T>(path: string, init?: RequestInit, requiresAuth = f
     if (response.status === 401) {
       throw new Error("Non autorisé")
     }
-    throw new Error(`Échec de la requête (${response.status})`)
+    let message = `Échec de la requête (${response.status})`
+    const raw = await response.text()
+    if (raw) {
+      try {
+        const body = JSON.parse(raw) as { message?: string }
+        if (typeof body.message === "string" && body.message.length > 0) {
+          message = body.message
+        }
+      } catch {
+        message = raw
+      }
+    }
+    throw new Error(message)
+  }
+
+  if (response.status === 204) {
+    return undefined as T
   }
 
   return (await response.json()) as T
@@ -109,6 +125,23 @@ export function fetchUserStats(): Promise<MeStatsResponse> {
 
 export function fetchUserProfile(): Promise<MeProfileResponse> {
   return requestJson<MeProfileResponse>("/me/profile", undefined, true)
+}
+
+export async function updateUsername(username: string) {
+  const result = await requestJson<AuthResponse>(
+    "/me/username",
+    { method: "PUT", body: JSON.stringify({ username }) },
+    true,
+  )
+  setAuthToken(result.token)
+}
+
+export async function updatePassword(currentPassword: string, newPassword: string) {
+  await requestJson<void>(
+    "/me/password",
+    { method: "PUT", body: JSON.stringify({ currentPassword, newPassword }) },
+    true,
+  )
 }
 
 export function startGame(): Promise<GameStartResponse> {

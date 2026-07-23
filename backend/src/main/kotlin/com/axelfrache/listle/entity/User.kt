@@ -14,10 +14,10 @@ class User(
     val email: String,
 
     @Column(unique = true, nullable = false)
-    val username: String,
+    var username: String,
 
     @Column(nullable = false)
-    val passwordHash: String,
+    var passwordHash: String,
 
     @Column(nullable = false)
     val role: String = "ROLE_USER",

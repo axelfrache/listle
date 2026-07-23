@@ -7,6 +7,7 @@ import com.axelfrache.listle.repository.CategoryRepository
 import com.axelfrache.listle.repository.DailyCategoryRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.security.MessageDigest
 import java.time.LocalDate
 
 @Service
@@ -21,7 +22,7 @@ class DailyCategoryResolverService(
             return existing
         }
 
-        val activeCategories = categoryRepository.findByIsActiveTrueOrderBySlugAsc()
+        val activeCategories = activeCategoriesInRotationOrder()
         if (activeCategories.isEmpty()) {
             throw ResourceNotFoundException("Aucune catégorie active disponible")
         }
@@ -42,5 +43,19 @@ class DailyCategoryResolverService(
         val dailyCategory = getOrCreateDailyCategory(date)
         return categoryRepository.findById(dailyCategory.categoryId)
             .orElseThrow { ResourceNotFoundException("Catégorie introuvable pour la rotation quotidienne") }
+    }
+
+    fun activeCategoriesInRotationOrder(): List<Category> {
+        return categoryRepository.findByIsActiveTrueOrderBySlugAsc()
+            .sortedBy { rotationKey(it.slug) }
+    }
+
+    private fun rotationKey(slug: String): String {
+        val digest = MessageDigest.getInstance("MD5").digest("$ROTATION_SEED$slug".toByteArray())
+        return digest.joinToString("") { "%02x".format(it) }
+    }
+
+    companion object {
+        private const val ROTATION_SEED = "listle-v1:"
     }
 }

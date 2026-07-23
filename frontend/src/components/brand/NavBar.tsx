@@ -14,6 +14,7 @@ const links = [
   { to: "/leaderboard", label: "Classement" },
   { to: "/stats", label: "Statistiques" },
   { to: "/profile", label: "Profil" },
+  { to: "/settings", label: "Paramètres" },
 ]
 
 export function NavBar() {

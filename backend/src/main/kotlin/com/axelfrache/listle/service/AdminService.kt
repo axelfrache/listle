@@ -12,11 +12,12 @@ import java.time.LocalDate
 class AdminService(
     private val categoryRepository: CategoryRepository,
     private val categoryWordRepository: CategoryWordRepository,
-    private val dailyCategoryRepository: DailyCategoryRepository
+    private val dailyCategoryRepository: DailyCategoryRepository,
+    private val dailyCategoryResolverService: DailyCategoryResolverService
 ) {
     fun getSchedule(days: Int): List<ScheduleItemResponse> {
         val horizon = days.coerceIn(1, 60)
-        val active = categoryRepository.findByIsActiveTrueOrderBySlugAsc()
+        val active = dailyCategoryResolverService.activeCategoriesInRotationOrder()
         if (active.isEmpty()) return emptyList()
 
         val today = LocalDate.now()

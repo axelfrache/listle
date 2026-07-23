@@ -6,6 +6,7 @@ import { PlayPage } from "@/features/game/PlayPage"
 import { LandingPage } from "@/features/landing/LandingPage"
 import { LeaderboardPage } from "@/features/leaderboard/LeaderboardPage"
 import { ProfilePage } from "@/features/profile/ProfilePage"
+import { SettingsPage } from "@/features/settings/SettingsPage"
 import { StatsPage } from "@/features/stats/StatsPage"
 import { AppLayout } from "@/layouts/AppLayout"
 import { AdminRoute } from "@/router/AdminRoute"
@@ -24,6 +25,7 @@ export function AppRouter() {
             <Route path="/play" element={<PlayPage />} />
             <Route path="/stats" element={<StatsPage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/settings" element={<SettingsPage />} />
           </Route>
           <Route element={<AdminRoute />}>
             <Route path="/admin" element={<AdminPage />} />
