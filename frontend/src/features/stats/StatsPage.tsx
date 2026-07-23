@@ -76,7 +76,7 @@ export function StatsPage() {
           </Card.Content>
         </Card>
 
-        <Card className="border-border bg-[#141922] shadow-md sm:shadow-xl">
+        <Card className="border-border bg-card-dark shadow-md sm:shadow-xl">
           <Card.Header className="border-b-2 border-border">
             <Card.Title className="text-white">Catégories les plus fortes</Card.Title>
             <Card.Description className="text-white/70">

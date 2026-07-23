@@ -84,7 +84,7 @@ export function ProfilePage() {
             </Card.Content>
           </Card>
 
-          <Card className="w-full min-w-0 border-border bg-[#141922] shadow-md sm:shadow-xl">
+          <Card className="w-full min-w-0 border-border bg-card-dark shadow-md sm:shadow-xl">
             <Card.Header className="border-b-2 border-border">
               <Card.Title className="text-white">Succès</Card.Title>
             </Card.Header>

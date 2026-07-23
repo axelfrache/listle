@@ -52,7 +52,7 @@ export function Modal({
               {secondaryActionLabel}
             </Button>
           ) : null}
-          <Button size="lg" className="w-full sm:w-auto" onClick={onAction}>
+          <Button size="lg" variant="secondary" className="w-full sm:w-auto" onClick={onAction}>
             {actionLabel}
           </Button>
         </div>

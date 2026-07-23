@@ -212,6 +212,7 @@ export function PlayPage() {
                   </div>
                   <Button
                     size="lg"
+                    variant="secondary"
                     className="w-full sm:w-auto"
                     disabled={gameState !== "active" || submitting}
                   >
@@ -280,6 +281,7 @@ export function PlayPage() {
           >
             <Button
               size="lg"
+              variant="secondary"
               className="w-full sm:w-auto"
               onClick={handleStartGame}
               disabled={starting}
