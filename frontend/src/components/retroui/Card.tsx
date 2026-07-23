@@ -8,13 +8,7 @@ interface ICardProps extends HTMLAttributes<HTMLDivElement> {
 
 const Card = ({ className, ...props }: ICardProps) => {
   return (
-    <div
-      className={cn(
-        "inline-block border-2 rounded shadow-md bg-card",
-        className,
-      )}
-      {...props}
-    />
+    <div className={cn("inline-block border-2 rounded shadow-md bg-card", className)} {...props} />
   )
 }
 
