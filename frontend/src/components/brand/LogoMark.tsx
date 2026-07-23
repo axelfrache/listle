@@ -6,7 +6,7 @@ export function LogoMark() {
       <img
         src="/icon-192.png"
         alt="DayDash"
-        className="h-10 w-10 rounded-lg border-2 border-black object-cover shadow-[4px_4px_0_0_#000] transition-transform duration-200 group-hover:-translate-y-0.5 sm:h-12 sm:w-12 sm:shadow-[6px_6px_0_0_#000]"
+        className="h-10 w-10 rounded-lg border-2 border-border object-cover shadow-sm transition-transform duration-200 group-hover:-translate-y-0.5 sm:h-12 sm:w-12 sm:shadow"
       />
       <div className="leading-none">
         <div className="font-head text-xl uppercase tracking-[0.14em] text-white sm:text-2xl sm:tracking-[0.18em]">

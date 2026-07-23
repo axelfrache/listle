@@ -3,6 +3,7 @@ import { CalendarDays, Flame, Trophy } from "lucide-react"
 import { Card } from "@/components/retroui/Card"
 import { AvatarBlock } from "@/components/ui/AvatarBlock"
 import { Badge } from "@/components/ui/Badge"
+import { ErrorState } from "@/components/ui/ErrorState"
 import { Loader } from "@/components/ui/Loader"
 import { SectionIntro } from "@/features/shared/SectionIntro"
 import { useAsyncData } from "@/hooks/useAsyncData"
@@ -20,13 +21,7 @@ export function ProfilePage() {
   }
 
   if (error || !data) {
-    return (
-      <div className="flex min-h-[50vh] items-center justify-center">
-        <div className="border-2 border-black bg-white px-6 py-4 text-black shadow-[6px_6px_0_0_#000]">
-          Impossible de charger le profil pour le moment.
-        </div>
-      </div>
-    )
+    return <ErrorState message="Impossible de charger le profil pour le moment." />
   }
 
   return (
@@ -38,7 +33,7 @@ export function ProfilePage() {
       />
 
       <section className="grid gap-6 xl:grid-cols-[0.85fr_1.15fr]">
-        <Card className="w-full min-w-0 border-black bg-[#ffe45e] shadow-[8px_8px_0_0_#000] sm:shadow-[12px_12px_0_0_#000]">
+        <Card className="w-full min-w-0 border-border bg-primary shadow-md sm:shadow-xl">
           <Card.Content className="space-y-6 p-5 text-black sm:p-8">
             <AvatarBlock letters={data.avatarLetters} size="lg" />
             <div>
@@ -48,14 +43,14 @@ export function ProfilePage() {
               <p className="mt-3 max-w-md text-sm leading-6 text-black/75">{data.tagline}</p>
             </div>
             <div className="grid gap-3">
-              <div className="flex items-center gap-3 border-2 border-black bg-white px-4 py-3 shadow-[4px_4px_0_0_#000]">
+              <div className="flex items-center gap-3 border-2 border-border bg-white px-4 py-3 shadow-sm">
                 <CalendarDays className="size-5" />
                 <span className="min-w-0 break-words text-sm font-bold">
                   Inscrit le {data.joinedAt}
                 </span>
               </div>
-              <div className="flex items-center gap-3 border-2 border-black bg-white px-4 py-3 shadow-[4px_4px_0_0_#000]">
-                <Flame className="size-5 text-[#ff7a59]" />
+              <div className="flex items-center gap-3 border-2 border-border bg-white px-4 py-3 shadow-sm">
+                <Flame className="size-5 text-highlight" />
                 <span className="min-w-0 break-words text-sm font-bold">
                   {data.stats.currentStreak} jours de série en cours
                 </span>
@@ -65,8 +60,8 @@ export function ProfilePage() {
         </Card>
 
         <div className="grid min-w-0 gap-6">
-          <Card className="w-full min-w-0 border-black bg-white shadow-[8px_8px_0_0_#000] sm:shadow-[12px_12px_0_0_#000]">
-            <Card.Header className="border-b-2 border-black">
+          <Card className="w-full min-w-0 border-border bg-white shadow-md sm:shadow-xl">
+            <Card.Header className="border-b-2 border-border">
               <Card.Title className="text-black">Résumé des statistiques</Card.Title>
             </Card.Header>
             <Card.Content className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -78,9 +73,9 @@ export function ProfilePage() {
               ].map((item) => (
                 <div
                   key={item.label}
-                  className="min-w-0 border-2 border-black bg-[#f6f3ea] p-4 text-black shadow-[4px_4px_0_0_#000]"
+                  className="min-w-0 border-2 border-border bg-[#f6f3ea] p-4 text-black shadow-sm"
                 >
-                  <div className="text-xs font-black uppercase tracking-[0.18em] text-black/60">
+                  <div className="text-xs font-black uppercase tracking-[0.18em] text-black/70">
                     {item.label}
                   </div>
                   <div className="mt-2 font-head text-3xl uppercase sm:text-4xl">{item.value}</div>
@@ -89,15 +84,15 @@ export function ProfilePage() {
             </Card.Content>
           </Card>
 
-          <Card className="w-full min-w-0 border-black bg-[#141922] shadow-[8px_8px_0_0_#000] sm:shadow-[12px_12px_0_0_#000]">
-            <Card.Header className="border-b-2 border-black">
+          <Card className="w-full min-w-0 border-border bg-[#141922] shadow-md sm:shadow-xl">
+            <Card.Header className="border-b-2 border-border">
               <Card.Title className="text-white">Succès</Card.Title>
             </Card.Header>
             <Card.Content className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {data.badges.map((badge) => (
                 <div
                   key={badge.id}
-                  className="min-w-0 space-y-3 border-2 border-black bg-white p-4 text-black shadow-[4px_4px_0_0_#000]"
+                  className="min-w-0 space-y-3 border-2 border-border bg-white p-4 text-black shadow-sm"
                 >
                   <div className="flex items-center justify-between">
                     <Badge tone="accent" className="max-w-full whitespace-normal break-words">

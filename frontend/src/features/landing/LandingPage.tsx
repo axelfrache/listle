@@ -3,6 +3,7 @@ import { Flame, Gauge } from "lucide-react"
 
 import { Button } from "@/components/retroui/Button"
 import { Card } from "@/components/retroui/Card"
+import { ErrorState } from "@/components/ui/ErrorState"
 import { Loader } from "@/components/ui/Loader"
 
 import { useAsyncData } from "@/hooks/useAsyncData"
@@ -20,13 +21,7 @@ export function LandingPage() {
   }
 
   if (error || !data) {
-    return (
-      <div className="flex min-h-[50vh] items-center justify-center">
-        <div className="border-2 border-black bg-white px-6 py-4 text-black shadow-[6px_6px_0_0_#000]">
-          Impossible de charger les données d'accueil.
-        </div>
-      </div>
-    )
+    return <ErrorState message="Impossible de charger les données d'accueil." />
   }
 
   const { snapshot } = data
@@ -52,12 +47,12 @@ export function LandingPage() {
         </div>
 
         <div className="grid gap-6">
-          <Card className="border-black bg-[#68f2a3] shadow-[8px_8px_0_0_#000] sm:shadow-[12px_12px_0_0_#000]">
+          <Card className="border-border bg-accent shadow-md sm:shadow-xl">
             <Card.Content className="space-y-4 p-4 sm:p-6">
               <div className="flex items-center gap-3">
                 <Gauge className="size-6 text-black" />
                 <div>
-                  <div className="text-xs font-black uppercase tracking-[0.2em] text-black/60">
+                  <div className="text-xs font-black uppercase tracking-[0.2em] text-black/70">
                     Catégorie du jour
                   </div>
                   <div className="font-head text-2xl uppercase text-black sm:text-3xl">
@@ -70,13 +65,13 @@ export function LandingPage() {
               </p>
 
               <div className="grid grid-cols-2 gap-3 mt-4">
-                <div className="border-2 border-black bg-white p-3 shadow-[4px_4px_0_0_#000]">
-                  <div className="text-xs font-black uppercase tracking-[0.2em] text-black/60">
+                <div className="border-2 border-border bg-white p-3 shadow-sm">
+                  <div className="text-xs font-black uppercase tracking-[0.2em] text-black/70">
                     Temps
                   </div>
                   <div className="mt-1 font-head text-xl uppercase text-black">60s</div>
                 </div>
-                <div className="border-2 border-black bg-[#ff7a59] p-3 shadow-[4px_4px_0_0_#000]">
+                <div className="border-2 border-border bg-highlight p-3 shadow-sm">
                   <div className="text-xs font-black uppercase tracking-[0.2em] text-black/70">
                     Score
                   </div>
@@ -88,21 +83,21 @@ export function LandingPage() {
             </Card.Content>
           </Card>
 
-          <Card className="border-black bg-white shadow-[8px_8px_0_0_#000] sm:shadow-[12px_12px_0_0_#000]">
+          <Card className="border-border bg-white shadow-md sm:shadow-xl">
             <Card.Content className="grid gap-4 p-4 sm:grid-cols-2 sm:p-6">
               <div>
-                <div className="text-xs font-black uppercase tracking-[0.2em] text-black/60">
+                <div className="text-xs font-black uppercase tracking-[0.2em] text-black/70">
                   Série actuelle
                 </div>
                 <div className="mt-2 flex items-center gap-3">
-                  <Flame className="size-7 text-[#ff7a59]" />
+                  <Flame className="size-7 text-highlight" />
                   <span className="font-head text-3xl uppercase text-black sm:text-4xl">
                     {snapshot.userStreak} jours
                   </span>
                 </div>
               </div>
               <div>
-                <div className="text-xs font-black uppercase tracking-[0.2em] text-black/60">
+                <div className="text-xs font-black uppercase tracking-[0.2em] text-black/70">
                   Record du jour
                 </div>
                 <div className="mt-2 font-head text-3xl uppercase text-black sm:text-4xl">
@@ -115,8 +110,8 @@ export function LandingPage() {
       </section>
 
       <section className="grid gap-6 lg:grid-cols-3">
-        <Card className="border-black bg-white shadow-[8px_8px_0_0_#000] sm:shadow-[10px_10px_0_0_#000]">
-          <Card.Header className="border-b-2 border-black">
+        <Card className="border-border bg-white shadow-md sm:shadow-lg">
+          <Card.Header className="border-b-2 border-border">
             <Card.Title className="text-black">Meilleurs joueurs du jour</Card.Title>
             <Card.Description>Les meilleurs scores sur la catégorie du jour.</Card.Description>
           </Card.Header>
@@ -124,10 +119,10 @@ export function LandingPage() {
             {snapshot.leaderboardPreview.map((entry) => (
               <div
                 key={entry.username}
-                className="flex items-center justify-between gap-3 border-2 border-black bg-[#f6f3ea] px-3 py-3 shadow-[4px_4px_0_0_#000] sm:px-4"
+                className="flex items-center justify-between gap-3 border-2 border-border bg-[#f6f3ea] px-3 py-3 shadow-sm sm:px-4"
               >
                 <div className="min-w-0">
-                  <div className="text-xs font-black uppercase tracking-[0.2em] text-black/50">
+                  <div className="text-xs font-black uppercase tracking-[0.2em] text-black/70">
                     #{entry.rank}
                   </div>
                   <div className="truncate font-head text-lg uppercase text-black sm:text-xl">
@@ -140,8 +135,8 @@ export function LandingPage() {
           </Card.Content>
         </Card>
 
-        <Card className="border-black bg-[#fff7d6] shadow-[8px_8px_0_0_#000] sm:shadow-[10px_10px_0_0_#000] lg:col-span-2">
-          <Card.Header className="border-b-2 border-black">
+        <Card className="border-border bg-[#fff7d6] shadow-md sm:shadow-lg lg:col-span-2">
+          <Card.Header className="border-b-2 border-border">
             <Card.Title className="text-black">Règles du jeu</Card.Title>
             <Card.Description>Facile à comprendre, difficile à battre.</Card.Description>
           </Card.Header>
@@ -162,9 +157,9 @@ export function LandingPage() {
             ].map((item, index) => (
               <div
                 key={item.title}
-                className="space-y-3 border-2 border-black bg-white p-4 shadow-[4px_4px_0_0_#000]"
+                className="space-y-3 border-2 border-border bg-white p-4 shadow-sm"
               >
-                <div className="text-xs font-black uppercase tracking-[0.22em] text-black/50">
+                <div className="text-xs font-black uppercase tracking-[0.22em] text-black/70">
                   0{index + 1}
                 </div>
                 <div className="font-head text-xl uppercase text-black sm:text-2xl">

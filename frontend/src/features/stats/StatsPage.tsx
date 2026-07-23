@@ -1,5 +1,6 @@
 import { Card } from "@/components/retroui/Card"
 import { Badge } from "@/components/ui/Badge"
+import { ErrorState } from "@/components/ui/ErrorState"
 import { Loader } from "@/components/ui/Loader"
 import { MeterBar } from "@/components/ui/MeterBar"
 import { SectionIntro } from "@/features/shared/SectionIntro"
@@ -18,13 +19,7 @@ export function StatsPage() {
   }
 
   if (error || !data) {
-    return (
-      <div className="flex min-h-[50vh] items-center justify-center">
-        <div className="border-2 border-black bg-white px-6 py-4 text-black shadow-[6px_6px_0_0_#000]">
-          Impossible de charger les statistiques pour le moment.
-        </div>
-      </div>
-    )
+    return <ErrorState message="Impossible de charger les statistiques pour le moment." />
   }
 
   return (
@@ -44,12 +39,12 @@ export function StatsPage() {
         ].map((item, index) => (
           <Card
             key={item.label}
-            className={`border-black shadow-[8px_8px_0_0_#000] sm:shadow-[10px_10px_0_0_#000] ${
-              index % 2 === 0 ? "bg-white" : "bg-[#ffe45e]"
+            className={`border-border shadow-md sm:shadow-lg ${
+              index % 2 === 0 ? "bg-white" : "bg-primary"
             }`}
           >
             <Card.Content className="space-y-3 p-5 text-black">
-              <div className="text-xs font-black uppercase tracking-[0.2em] text-black/60">
+              <div className="text-xs font-black uppercase tracking-[0.2em] text-black/70">
                 {item.label}
               </div>
               <div className="font-head text-4xl uppercase sm:text-5xl">{item.value}</div>
@@ -59,15 +54,15 @@ export function StatsPage() {
       </section>
 
       <section className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
-        <Card className="border-black bg-white shadow-[8px_8px_0_0_#000] sm:shadow-[12px_12px_0_0_#000]">
-          <Card.Header className="border-b-2 border-black">
+        <Card className="border-border bg-white shadow-md sm:shadow-xl">
+          <Card.Header className="border-b-2 border-border">
             <Card.Title className="text-black">Rythme hebdomadaire</Card.Title>
             <Card.Description>Scores récents sur les sept dernières sessions.</Card.Description>
           </Card.Header>
           <Card.Content className="space-y-4">
             {data.weeklyTrend.map((point, index) => (
               <div key={point.label} className="space-y-2">
-                <div className="flex items-center justify-between text-xs font-black uppercase tracking-[0.2em] text-black/60">
+                <div className="flex items-center justify-between text-xs font-black uppercase tracking-[0.2em] text-black/70">
                   <span>{point.label}</span>
                   <span>{point.value}</span>
                 </div>
@@ -81,8 +76,8 @@ export function StatsPage() {
           </Card.Content>
         </Card>
 
-        <Card className="border-black bg-[#141922] shadow-[8px_8px_0_0_#000] sm:shadow-[12px_12px_0_0_#000]">
-          <Card.Header className="border-b-2 border-black">
+        <Card className="border-border bg-[#141922] shadow-md sm:shadow-xl">
+          <Card.Header className="border-b-2 border-border">
             <Card.Title className="text-white">Catégories les plus fortes</Card.Title>
             <Card.Description className="text-white/70">
               Les catégories où ta vitesse et ta mémoire sont les plus efficaces.
@@ -92,7 +87,7 @@ export function StatsPage() {
             {data.strongestCategories.map((item) => (
               <div
                 key={item.category}
-                className="space-y-3 border-2 border-black bg-white p-4 text-black shadow-[4px_4px_0_0_#000]"
+                className="space-y-3 border-2 border-border bg-white p-4 text-black shadow-sm"
               >
                 <div className="flex items-center justify-between gap-3">
                   <div className="font-head text-2xl uppercase">{item.category}</div>
@@ -106,8 +101,8 @@ export function StatsPage() {
         </Card>
       </section>
 
-      <Card className="border-black bg-[#fff7d6] shadow-[8px_8px_0_0_#000] sm:shadow-[12px_12px_0_0_#000]">
-        <Card.Header className="border-b-2 border-black">
+      <Card className="border-border bg-[#fff7d6] shadow-md sm:shadow-xl">
+        <Card.Header className="border-b-2 border-border">
           <Card.Title className="text-black">Historique récent</Card.Title>
           <Card.Description>
             Un résumé compact de tes dernières catégories et scores.
@@ -117,10 +112,10 @@ export function StatsPage() {
           {data.recentHistory.map((entry) => (
             <div
               key={`${entry.date}-${entry.category}`}
-              className="space-y-3 border-2 border-black bg-white p-4 text-black shadow-[4px_4px_0_0_#000]"
+              className="space-y-3 border-2 border-border bg-white p-4 text-black shadow-sm"
             >
               <div className="flex items-center justify-between">
-                <div className="text-xs font-black uppercase tracking-[0.18em] text-black/60">
+                <div className="text-xs font-black uppercase tracking-[0.18em] text-black/70">
                   {entry.date}
                 </div>
               </div>

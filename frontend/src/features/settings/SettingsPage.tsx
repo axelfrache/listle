@@ -86,15 +86,15 @@ export function SettingsPage() {
         </div>
       ) : (
         <>
-          <Card className="w-full border-black bg-white shadow-[12px_12px_0_0_#000]">
-            <Card.Header className="border-b-2 border-black">
+          <Card className="w-full border-border bg-white shadow-xl">
+            <Card.Header className="border-b-2 border-border">
               <Card.Title className="text-black">Nom d'utilisateur</Card.Title>
               <Card.Description>Il apparaît dans le classement et sur ton profil.</Card.Description>
             </Card.Header>
             <Card.Content className="p-5 sm:p-6">
               <form className="space-y-4" onSubmit={handleUsernameSubmit}>
                 <label className="grid gap-2 text-black">
-                  <span className="text-xs font-black uppercase tracking-[0.2em] text-black/60">
+                  <span className="text-xs font-black uppercase tracking-[0.2em] text-black/70">
                     Nom d'utilisateur
                   </span>
                   <Input
@@ -116,15 +116,15 @@ export function SettingsPage() {
             </Card.Content>
           </Card>
 
-          <Card className="w-full border-black bg-white shadow-[12px_12px_0_0_#000]">
-            <Card.Header className="border-b-2 border-black">
+          <Card className="w-full border-border bg-white shadow-xl">
+            <Card.Header className="border-b-2 border-border">
               <Card.Title className="text-black">Mot de passe</Card.Title>
               <Card.Description>Saisis ton mot de passe actuel pour le changer.</Card.Description>
             </Card.Header>
             <Card.Content className="p-5 sm:p-6">
               <form className="space-y-4" onSubmit={handlePasswordSubmit}>
                 <label className="grid gap-2 text-black">
-                  <span className="text-xs font-black uppercase tracking-[0.2em] text-black/60">
+                  <span className="text-xs font-black uppercase tracking-[0.2em] text-black/70">
                     Mot de passe actuel
                   </span>
                   <Input
@@ -135,7 +135,7 @@ export function SettingsPage() {
                   />
                 </label>
                 <label className="grid gap-2 text-black">
-                  <span className="text-xs font-black uppercase tracking-[0.2em] text-black/60">
+                  <span className="text-xs font-black uppercase tracking-[0.2em] text-black/70">
                     Nouveau mot de passe
                   </span>
                   <Input
@@ -147,7 +147,7 @@ export function SettingsPage() {
                   />
                 </label>
                 <label className="grid gap-2 text-black">
-                  <span className="text-xs font-black uppercase tracking-[0.2em] text-black/60">
+                  <span className="text-xs font-black uppercase tracking-[0.2em] text-black/70">
                     Confirmer le nouveau mot de passe
                   </span>
                   <Input
@@ -177,8 +177,8 @@ function Notice({ notice }: { notice: Notice }) {
   }
   return (
     <div
-      className={`border-2 border-black px-4 py-3 text-sm font-bold shadow-[4px_4px_0_0_#000] ${
-        notice.type === "success" ? "bg-[#68f2a3] text-black" : "bg-[#ff7a59] text-black"
+      className={`border-2 border-border px-4 py-3 text-sm font-bold shadow-sm ${
+        notice.type === "success" ? "bg-accent text-black" : "bg-destructive text-black"
       }`}
     >
       {notice.text}

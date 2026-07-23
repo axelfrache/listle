@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom"
 import { Button } from "@/components/retroui/Button"
 import { Card } from "@/components/retroui/Card"
 import { Badge } from "@/components/ui/Badge"
+import { ErrorState } from "@/components/ui/ErrorState"
 import { Input } from "@/components/ui/Input"
 import { Loader } from "@/components/ui/Loader"
 import { Modal } from "@/components/ui/Modal"
@@ -72,13 +73,7 @@ export function PlayPage() {
   }
 
   if (error || !category) {
-    return (
-      <div className="flex min-h-[50vh] items-center justify-center">
-        <div className="border-2 border-black bg-white px-6 py-4 text-black shadow-[6px_6px_0_0_#000]">
-          Impossible de charger la catégorie du jour.
-        </div>
-      </div>
-    )
+    return <ErrorState message="Impossible de charger la catégorie du jour." />
   }
 
   const validWords = words.filter((word) => word.status === "valid")
@@ -160,7 +155,7 @@ export function PlayPage() {
     <>
       <div className="mx-auto w-full max-w-6xl">
         <section className="space-y-6">
-          <Card className="w-full border-black bg-[#fff7d6] shadow-[8px_8px_0_0_#000] sm:shadow-[12px_12px_0_0_#000]">
+          <Card className="w-full border-border bg-[#fff7d6] shadow-md sm:shadow-xl">
             <Card.Content className="space-y-6 p-4 sm:p-8">
               <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
                 <div className="space-y-3">
@@ -175,8 +170,8 @@ export function PlayPage() {
                   </div>
                 </div>
                 <div
-                  className={`self-start border-2 border-black px-5 py-3 text-center shadow-[6px_6px_0_0_#000] sm:self-auto sm:px-6 sm:py-4 sm:shadow-[8px_8px_0_0_#000] ${
-                    urgency ? "bg-[#ff7a59] text-black" : "bg-white text-black"
+                  className={`self-start border-2 border-border px-5 py-3 text-center shadow sm:self-auto sm:px-6 sm:py-4 sm:shadow-md ${
+                    urgency ? "animate-pulse bg-destructive text-black" : "bg-white text-black"
                   }`}
                 >
                   <div className="flex items-center justify-center gap-2 text-xs font-black uppercase tracking-[0.2em]">
@@ -203,13 +198,13 @@ export function PlayPage() {
                 />
                 <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
                   <div
-                    className={`w-full border-2 border-black px-4 py-3 text-sm font-bold shadow-[6px_6px_0_0_#000] sm:w-auto ${
+                    className={`w-full border-2 border-border px-4 py-3 text-sm font-bold shadow sm:w-auto ${
                       feedback.state === "valid"
-                        ? "bg-[#68f2a3] text-black"
+                        ? "bg-accent text-black"
                         : feedback.state === "duplicate"
-                          ? "bg-[#ffe45e] text-black"
+                          ? "bg-primary text-black"
                           : feedback.state === "invalid"
-                            ? "bg-[#ff7a59] text-black"
+                            ? "bg-destructive text-black"
                             : "bg-white text-black"
                     }`}
                   >
@@ -226,7 +221,7 @@ export function PlayPage() {
               </form>
 
               <div className="grid gap-4 sm:grid-cols-[0.35fr_1fr]">
-                <div className="border-2 border-black bg-[#10131d] p-5 text-white shadow-[8px_8px_0_0_#000]">
+                <div className="border-2 border-border bg-[#10131d] p-5 text-white shadow-md">
                   <div className="text-xs font-black uppercase tracking-[0.2em] text-white/70">
                     Score
                   </div>
@@ -234,23 +229,23 @@ export function PlayPage() {
                     {validWords.length}
                   </div>
                 </div>
-                <div className="border-2 border-black bg-white p-4 shadow-[8px_8px_0_0_#000]">
-                  <div className="mb-3 text-xs font-black uppercase tracking-[0.2em] text-black/60">
+                <div className="border-2 border-border bg-white p-4 shadow-md">
+                  <div className="mb-3 text-xs font-black uppercase tracking-[0.2em] text-black/70">
                     Mots capturés
                   </div>
                   <div className="flex min-h-24 flex-wrap gap-3">
                     {words.length === 0 ? (
-                      <div className="text-sm text-black/60">
+                      <div className="text-sm text-black/70">
                         Aucun mot pour l'instant. Le tableau se remplit dès la première réponse.
                       </div>
                     ) : (
                       words.map((word, index) => (
                         <div
                           key={`${word.value}-${index}`}
-                          className={`border-2 border-black px-3 py-2 text-xs font-black uppercase tracking-[0.1em] shadow-[4px_4px_0_0_#000] sm:text-sm sm:tracking-[0.14em] ${
+                          className={`border-2 border-border px-3 py-2 text-xs font-black uppercase tracking-[0.1em] shadow-sm sm:text-sm sm:tracking-[0.14em] ${
                             word.status === "valid"
-                              ? "bg-[#68f2a3] text-black"
-                              : "bg-[#ffe45e] text-black"
+                              ? "bg-accent text-black"
+                              : "bg-primary text-black"
                           }`}
                         >
                           {word.value}
@@ -266,9 +261,9 @@ export function PlayPage() {
       </div>
 
       <Dialog open={gameState === "pre-game"}>
-        <Dialog.Content className="w-[min(94vw,680px)] border-black bg-[#fff7d6] p-0">
-          <Dialog.Header className="border-black bg-[#ffe45e] px-5 py-4 sm:px-8 sm:py-5">
-            <div className="mb-2 text-xs font-black uppercase tracking-[0.3em] text-black/60">
+        <Dialog.Content className="w-[min(94vw,680px)] border-border bg-[#fff7d6] p-0">
+          <Dialog.Header className="border-border bg-primary px-5 py-4 sm:px-8 sm:py-5">
+            <div className="mb-2 text-xs font-black uppercase tracking-[0.3em] text-black/70">
               Prêt ?
             </div>
             <div className="font-head text-3xl uppercase leading-none text-black sm:text-5xl">
@@ -280,7 +275,7 @@ export function PlayPage() {
             </Dialog.Description>
           </Dialog.Header>
           <Dialog.Footer
-            className="border-black bg-[#fff7d6] px-5 py-4 sm:px-8 sm:py-5"
+            className="border-border bg-[#fff7d6] px-5 py-4 sm:px-8 sm:py-5"
             position="static"
           >
             <Button
@@ -305,12 +300,12 @@ export function PlayPage() {
         onSecondaryAction={() => navigate("/")}
       >
         <div className="grid gap-4 sm:grid-cols-2">
-          <div className="border-2 border-black bg-white p-4 shadow-[4px_4px_0_0_#000]">
-            <div className="text-xs font-black uppercase tracking-[0.2em] text-black/60">Score</div>
+          <div className="border-2 border-border bg-white p-4 shadow-sm">
+            <div className="text-xs font-black uppercase tracking-[0.2em] text-black/70">Score</div>
             <div className="mt-2 font-head text-4xl uppercase text-black">{result?.score ?? 0}</div>
           </div>
-          <div className="border-2 border-black bg-white p-4 shadow-[4px_4px_0_0_#000]">
-            <div className="text-xs font-black uppercase tracking-[0.2em] text-black/60">
+          <div className="border-2 border-border bg-white p-4 shadow-sm">
+            <div className="text-xs font-black uppercase tracking-[0.2em] text-black/70">
               Meilleur score
             </div>
             <div className="mt-2 font-head text-4xl uppercase text-black">
@@ -319,14 +314,14 @@ export function PlayPage() {
           </div>
         </div>
         <div className="space-y-3">
-          <div className="text-xs font-black uppercase tracking-[0.2em] text-black/60">
+          <div className="text-xs font-black uppercase tracking-[0.2em] text-black/70">
             Mots valides
           </div>
           <div className="flex flex-wrap gap-3">
             {result?.words.map((word) => (
               <div
                 key={word}
-                className="border-2 border-black bg-[#68f2a3] px-3 py-2 text-sm font-black uppercase tracking-[0.14em] text-black shadow-[4px_4px_0_0_#000]"
+                className="border-2 border-border bg-accent px-3 py-2 text-sm font-black uppercase tracking-[0.14em] text-black shadow-sm"
               >
                 {word}
               </div>

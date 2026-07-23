@@ -3,6 +3,7 @@ import { Trophy } from "lucide-react"
 import { Card } from "@/components/retroui/Card"
 import { Table } from "@/components/retroui/Table"
 import { Badge } from "@/components/ui/Badge"
+import { ErrorState } from "@/components/ui/ErrorState"
 import { Loader } from "@/components/ui/Loader"
 import { Tabs } from "@/components/ui/Tabs"
 import { SectionIntro } from "@/features/shared/SectionIntro"
@@ -52,19 +53,15 @@ export function LeaderboardPage() {
           <Loader />
         </div>
       ) : error || !data ? (
-        <div className="flex min-h-[40vh] items-center justify-center">
-          <div className="border-2 border-black bg-white px-6 py-4 text-black shadow-[6px_6px_0_0_#000]">
-            Impossible de charger le classement.
-          </div>
-        </div>
+        <ErrorState message="Impossible de charger le classement." className="min-h-[40vh]" />
       ) : (
         <>
           <section className="grid gap-4 lg:grid-cols-3">
             {topThree.map((entry, index) => (
               <Card
                 key={entry.username}
-                className={`w-full border-black shadow-[10px_10px_0_0_#000] ${
-                  index === 0 ? "bg-[#ffe45e]" : index === 1 ? "bg-white" : "bg-[#68f2a3]"
+                className={`w-full border-border shadow-lg ${
+                  index === 0 ? "bg-primary" : index === 1 ? "bg-white" : "bg-accent"
                 }`}
               >
                 <Card.Content className="flex min-h-40 flex-col justify-between space-y-4 p-4 text-black sm:min-h-44 sm:p-6">
@@ -87,8 +84,8 @@ export function LeaderboardPage() {
             ))}
           </section>
 
-          <Card className="w-full border-black bg-white shadow-[12px_12px_0_0_#000]">
-            <Card.Header className="border-b-2 border-black">
+          <Card className="w-full border-border bg-white shadow-xl">
+            <Card.Header className="border-b-2 border-border">
               <Card.Title className="text-black">Classement complet</Card.Title>
               <Card.Description>
                 La ligne de l'utilisateur courant reste surlignée pour un repérage rapide.
@@ -96,7 +93,7 @@ export function LeaderboardPage() {
             </Card.Header>
             <Card.Content className="p-0 text-black">
               {data.length === 0 ? (
-                <div className="p-10 text-center text-sm text-black/60">
+                <div className="p-10 text-center text-sm text-black/70">
                   Aucun score n'a encore été publié sur cette période.
                 </div>
               ) : (
@@ -115,7 +112,7 @@ export function LeaderboardPage() {
                         key={`${timeWindow}-${entry.username}`}
                         className={
                           entry.isCurrentUser
-                            ? "bg-[#ffe45e] text-black"
+                            ? "bg-primary text-black"
                             : "text-black hover:bg-black/5 hover:text-black"
                         }
                       >

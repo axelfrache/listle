@@ -51,7 +51,7 @@ export function AuthPage({ mode }: AuthPageProps) {
 
   return (
     <div className="grid min-h-[75vh] gap-6 lg:grid-cols-[1fr_0.9fr]">
-      <Card className="border-black bg-[#ffe45e] shadow-[8px_8px_0_0_#000] sm:shadow-[12px_12px_0_0_#000]">
+      <Card className="border-border bg-primary shadow-md sm:shadow-xl">
         <Card.Content className="flex h-full flex-col justify-between gap-8 p-5 text-black sm:p-8">
           <div className="space-y-5">
             <Badge tone="dark">Accès DayDash</Badge>
@@ -67,7 +67,7 @@ export function AuthPage({ mode }: AuthPageProps) {
               (item) => (
                 <div
                   key={item}
-                  className="border-2 border-black bg-white p-4 text-sm font-black uppercase tracking-[0.16em] shadow-[4px_4px_0_0_#000]"
+                  className="border-2 border-border bg-white p-4 text-sm font-black uppercase tracking-[0.16em] shadow-sm"
                 >
                   {item}
                 </div>
@@ -77,10 +77,10 @@ export function AuthPage({ mode }: AuthPageProps) {
         </Card.Content>
       </Card>
 
-      <Card className="border-black bg-white shadow-[8px_8px_0_0_#000] sm:shadow-[12px_12px_0_0_#000]">
+      <Card className="border-border bg-white shadow-md sm:shadow-xl">
         <Card.Content className="space-y-6 p-5 sm:p-8">
           <div className="space-y-2 text-black">
-            <div className="text-xs font-black uppercase tracking-[0.2em] text-black/60">
+            <div className="text-xs font-black uppercase tracking-[0.2em] text-black/70">
               {isRegister ? "Créer un compte" : "Bon retour"}
             </div>
             <div className="font-head text-3xl uppercase sm:text-4xl">
@@ -156,7 +156,7 @@ function Field({
 }) {
   return (
     <label className="grid gap-2 text-black">
-      <span className="text-xs font-black uppercase tracking-[0.2em] text-black/60">{label}</span>
+      <span className="text-xs font-black uppercase tracking-[0.2em] text-black/70">{label}</span>
       <Input type={type} placeholder={placeholder} value={value} onChange={onChange} required />
     </label>
   )

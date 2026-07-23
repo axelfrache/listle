@@ -82,13 +82,13 @@ export function AdminPage() {
       />
 
       {message ? (
-        <div className="border-2 border-black bg-[#ffe45e] px-4 py-3 text-sm font-bold text-black shadow-[6px_6px_0_0_#000]">
+        <div className="border-2 border-border bg-primary px-4 py-3 text-sm font-bold text-black shadow">
           {message}
         </div>
       ) : null}
 
-      <Card className="w-full border-black bg-white shadow-[12px_12px_0_0_#000]">
-        <Card.Header className="border-b-2 border-black">
+      <Card className="w-full border-border bg-white shadow-xl">
+        <Card.Header className="border-b-2 border-border">
           <Card.Title className="flex items-center gap-2 text-black">
             <CalendarDays className="size-5" /> Catégories à venir (14 jours)
           </Card.Title>
@@ -103,7 +103,7 @@ export function AdminPage() {
               <Loader />
             </div>
           ) : schedule.error || !schedule.data ? (
-            <div className="p-8 text-center text-sm text-black/60">
+            <div className="p-8 text-center text-sm text-black/70">
               Impossible de charger le planning.
             </div>
           ) : (
@@ -120,9 +120,7 @@ export function AdminPage() {
                 {schedule.data.map((item, index) => (
                   <Table.Row
                     key={item.date}
-                    className={
-                      index === 0 ? "bg-[#68f2a3] text-black" : "text-black hover:bg-black/5"
-                    }
+                    className={index === 0 ? "bg-accent text-black" : "text-black hover:bg-black/5"}
                   >
                     <Table.Cell className="font-black uppercase">
                       {formatDate(item.date)}
@@ -155,8 +153,8 @@ export function AdminPage() {
         </Card.Content>
       </Card>
 
-      <Card className="w-full border-black bg-white shadow-[12px_12px_0_0_#000]">
-        <Card.Header className="border-b-2 border-black">
+      <Card className="w-full border-border bg-white shadow-xl">
+        <Card.Header className="border-b-2 border-border">
           <Card.Title className="text-black">Catégories</Card.Title>
           <Card.Description>
             Source, nombre de mots en cache et resynchronisation individuelle.
@@ -168,7 +166,7 @@ export function AdminPage() {
               <Loader />
             </div>
           ) : categories.error || !categories.data ? (
-            <div className="p-8 text-center text-sm text-black/60">
+            <div className="p-8 text-center text-sm text-black/70">
               Impossible de charger les catégories.
             </div>
           ) : (
@@ -198,7 +196,7 @@ export function AdminPage() {
                         {hasSource ? (
                           category.source
                         ) : (
-                          <span className="text-black/50">manuelle</span>
+                          <span className="text-black/70">manuelle</span>
                         )}
                       </Table.Cell>
                       <Table.Cell>{category.wordCount}</Table.Cell>
@@ -206,7 +204,7 @@ export function AdminPage() {
                         <Button
                           size="sm"
                           variant="outline"
-                          className="border-black bg-white text-black"
+                          className="border-border bg-white text-black"
                           disabled={!hasSource || busy}
                           onClick={() => handleSync(category.slug)}
                         >
