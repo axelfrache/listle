@@ -1,17 +1,17 @@
-package com.axelfrache.listle.service
+package com.axelfrache.daydash.service
 
-import com.axelfrache.listle.dto.response.MeAchievementResponse
-import com.axelfrache.listle.dto.response.MeCategoryPerformanceResponse
-import com.axelfrache.listle.dto.response.MeProfileResponse
-import com.axelfrache.listle.dto.response.MeProfileStatsResponse
-import com.axelfrache.listle.dto.response.MeRecentGameResponse
-import com.axelfrache.listle.dto.response.MeStatPointResponse
-import com.axelfrache.listle.dto.response.MeStatsResponse
-import com.axelfrache.listle.entity.GameSession
-import com.axelfrache.listle.entity.GameStatus
-import com.axelfrache.listle.entity.User
-import com.axelfrache.listle.repository.CategoryRepository
-import com.axelfrache.listle.repository.GameSessionRepository
+import com.axelfrache.daydash.dto.response.MeAchievementResponse
+import com.axelfrache.daydash.dto.response.MeCategoryPerformanceResponse
+import com.axelfrache.daydash.dto.response.MeProfileResponse
+import com.axelfrache.daydash.dto.response.MeProfileStatsResponse
+import com.axelfrache.daydash.dto.response.MeRecentGameResponse
+import com.axelfrache.daydash.dto.response.MeStatPointResponse
+import com.axelfrache.daydash.dto.response.MeStatsResponse
+import com.axelfrache.daydash.entity.GameSession
+import com.axelfrache.daydash.entity.GameStatus
+import com.axelfrache.daydash.entity.User
+import com.axelfrache.daydash.repository.CategoryRepository
+import com.axelfrache.daydash.repository.GameSessionRepository
 import org.springframework.stereotype.Service
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -22,7 +22,7 @@ import kotlin.math.round
 @Service
 class MeService(
     private val gameSessionRepository: GameSessionRepository,
-    private val categoryRepository: CategoryRepository
+    private val categoryRepository: CategoryRepository,
 ) {
     private val dateFormatter = DateTimeFormatter.ofPattern("dd MMM", Locale.FRENCH)
     private val weekdayFormatter = DateTimeFormatter.ofPattern("EEE", Locale.FRENCH)
@@ -39,50 +39,56 @@ class MeService(
         val totalWordsFound = sessions.sumOf { it.foundCount }
         val currentStreak = computeCurrentStreak(sessions)
 
-        val categoryNames = categoryRepository.findAll()
-            .associateBy({ it.id ?: "" }, { it.name })
+        val categoryNames =
+            categoryRepository
+                .findAll()
+                .associateBy({ it.id ?: "" }, { it.name })
 
-        val strongestCategories = sessions
-            .groupBy { it.categoryId }
-            .entries
-            .sortedByDescending { (_, categorySessions) -> categorySessions.map { it.score }.average() }
-            .take(3)
-            .map { (categoryId, categorySessions) ->
-                MeCategoryPerformanceResponse(
-                    category = categoryNames[categoryId] ?: "Inconnu",
-                    averageScore = round(categorySessions.map { it.score }.average() * 10.0) / 10.0,
-                    bestScore = categorySessions.maxOf { it.score }
-                )
-            }
+        val strongestCategories =
+            sessions
+                .groupBy { it.categoryId }
+                .entries
+                .sortedByDescending { (_, categorySessions) -> categorySessions.map { it.score }.average() }
+                .take(3)
+                .map { (categoryId, categorySessions) ->
+                    MeCategoryPerformanceResponse(
+                        category = categoryNames[categoryId] ?: "Inconnu",
+                        averageScore = round(categorySessions.map { it.score }.average() * 10.0) / 10.0,
+                        bestScore = categorySessions.maxOf { it.score },
+                    )
+                }
 
         val allScores = gameSessionRepository.findByStatus(GameStatus.FINISHED).map { it.score }
-        val recentHistory = sessions
-            .sortedByDescending { it.startedAt }
-            .take(5)
-            .map { session ->
-                val lowerOrEqual = allScores.count { it <= session.score }
-                val percentile = if (allScores.isEmpty()) 50 else ((lowerOrEqual.toDouble() / allScores.size) * 100.0).toInt().coerceIn(1, 99)
-                MeRecentGameResponse(
-                    date = session.startedAt.toLocalDate().format(dateFormatter),
-                    category = categoryNames[session.categoryId] ?: "Inconnu",
-                    score = session.score,
-                    percentile = percentile
-                )
-            }
+        val recentHistory =
+            sessions
+                .sortedByDescending { it.startedAt }
+                .take(5)
+                .map { session ->
+                    val lowerOrEqual = allScores.count { it <= session.score }
+                    val percentile = if (allScores.isEmpty()) 50 else ((lowerOrEqual.toDouble() / allScores.size) * 100.0).toInt().coerceIn(1, 99)
+                    MeRecentGameResponse(
+                        date = session.startedAt.toLocalDate().format(dateFormatter),
+                        category = categoryNames[session.categoryId] ?: "Inconnu",
+                        score = session.score,
+                        percentile = percentile,
+                    )
+                }
 
         val weekStart = LocalDate.now().with(DayOfWeek.MONDAY)
-        val dailyScores = sessions
-            .filter { !it.startedAt.toLocalDate().isBefore(weekStart) }
-            .groupBy { it.startedAt.toLocalDate() }
-            .mapValues { (_, daySessions) -> daySessions.maxOf { it.score } }
+        val dailyScores =
+            sessions
+                .filter { !it.startedAt.toLocalDate().isBefore(weekStart) }
+                .groupBy { it.startedAt.toLocalDate() }
+                .mapValues { (_, daySessions) -> daySessions.maxOf { it.score } }
 
-        val weeklyTrend = (0..6).map { offset ->
-            val day = weekStart.plusDays(offset.toLong())
-            MeStatPointResponse(
-                label = day.format(weekdayFormatter),
-                value = dailyScores[day] ?: 0
-            )
-        }
+        val weeklyTrend =
+            (0..6).map { offset ->
+                val day = weekStart.plusDays(offset.toLong())
+                MeStatPointResponse(
+                    label = day.format(weekdayFormatter),
+                    value = dailyScores[day] ?: 0,
+                )
+            }
 
         return MeStatsResponse(
             averageScore = averageScore,
@@ -92,48 +98,51 @@ class MeService(
             totalWordsFound = totalWordsFound,
             strongestCategories = strongestCategories,
             recentHistory = recentHistory,
-            weeklyTrend = weeklyTrend
+            weeklyTrend = weeklyTrend,
         )
     }
 
     fun getProfile(user: User): MeProfileResponse {
         val stats = getStats(user.id ?: "")
         val cleanUsername = user.username.trim()
-        val avatarLetters = cleanUsername
-            .replace(Regex("[^A-Za-z0-9]"), "")
-            .take(2)
-            .uppercase()
-            .ifBlank { "US" }
+        val avatarLetters =
+            cleanUsername
+                .replace(Regex("[^A-Za-z0-9]"), "")
+                .take(2)
+                .uppercase()
+                .ifBlank { "US" }
 
         return MeProfileResponse(
             username = user.username,
             role = user.role,
             joinedAt = user.createdAt.toLocalDate().toString(),
-            tagline = "Joueur Word Clash authentifié.",
+            tagline = "Joueur DayDash authentifié.",
             avatarLetters = avatarLetters,
-            badges = listOf(
-                MeAchievementResponse(
-                    id = "streak",
-                    label = "Série de ${stats.currentStreak} jours",
-                    description = "Jours consécutifs avec une manche terminée."
+            badges =
+                listOf(
+                    MeAchievementResponse(
+                        id = "streak",
+                        label = "Série de ${stats.currentStreak} jours",
+                        description = "Jours consécutifs avec une manche terminée.",
+                    ),
+                    MeAchievementResponse(
+                        id = "best",
+                        label = "Record ${stats.bestScore}",
+                        description = "Meilleur score enregistré sur ton compte.",
+                    ),
+                    MeAchievementResponse(
+                        id = "games",
+                        label = "${stats.gamesPlayed} parties",
+                        description = "Total des manches terminées sur ton compte.",
+                    ),
                 ),
-                MeAchievementResponse(
-                    id = "best",
-                    label = "Record ${stats.bestScore}",
-                    description = "Meilleur score enregistré sur ton compte."
+            stats =
+                MeProfileStatsResponse(
+                    averageScore = stats.averageScore,
+                    bestScore = stats.bestScore,
+                    gamesPlayed = stats.gamesPlayed,
+                    currentStreak = stats.currentStreak,
                 ),
-                MeAchievementResponse(
-                    id = "games",
-                    label = "${stats.gamesPlayed} parties",
-                    description = "Total des manches terminées sur ton compte."
-                )
-            ),
-            stats = MeProfileStatsResponse(
-                averageScore = stats.averageScore,
-                bestScore = stats.bestScore,
-                gamesPlayed = stats.gamesPlayed,
-                currentStreak = stats.currentStreak
-            )
         )
     }
 
@@ -150,8 +159,8 @@ class MeService(
         return streak
     }
 
-    private fun emptyStats(): MeStatsResponse {
-        return MeStatsResponse(
+    private fun emptyStats(): MeStatsResponse =
+        MeStatsResponse(
             averageScore = 0.0,
             bestScore = 0,
             gamesPlayed = 0,
@@ -159,8 +168,8 @@ class MeService(
             totalWordsFound = 0,
             strongestCategories = emptyList(),
             recentHistory = emptyList(),
-            weeklyTrend = listOf("Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim")
-                .map { MeStatPointResponse(it, 0) }
+            weeklyTrend =
+                listOf("Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim")
+                    .map { MeStatPointResponse(it, 0) },
         )
-    }
 }

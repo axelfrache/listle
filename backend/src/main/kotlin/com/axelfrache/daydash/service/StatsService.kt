@@ -1,20 +1,21 @@
-package com.axelfrache.listle.service
+package com.axelfrache.daydash.service
 
-import com.axelfrache.listle.dto.response.StatsOverviewResponse
-import com.axelfrache.listle.entity.GameStatus
-import com.axelfrache.listle.repository.GameSessionRepository
+import com.axelfrache.daydash.dto.response.StatsOverviewResponse
+import com.axelfrache.daydash.entity.GameStatus
+import com.axelfrache.daydash.repository.GameSessionRepository
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 
 @Service
 class StatsService(
-    private val gameSessionRepository: GameSessionRepository
+    private val gameSessionRepository: GameSessionRepository,
 ) {
     fun getOverview(userId: String): StatsOverviewResponse {
         val totalGames = gameSessionRepository.countByUserIdAndStatus(userId, GameStatus.FINISHED)
         val averageScore = gameSessionRepository.getAverageScoreByUserIdAndStatus(userId, GameStatus.FINISHED) ?: 0.0
-        val bestScore = gameSessionRepository.findTopByUserIdAndStatusOrderByScoreDesc(userId, GameStatus.FINISHED)?.score ?: 0
-        
+        val bestScore =
+            gameSessionRepository.findTopByUserIdAndStatusOrderByScoreDesc(userId, GameStatus.FINISHED)?.score ?: 0
+
         val sessions = gameSessionRepository.findByUserIdAndStatus(userId, GameStatus.FINISHED)
         val currentStreak = computeCurrentStreak(sessions.map { it.startedAt.toLocalDate() }.toSet())
 
@@ -22,7 +23,7 @@ class StatsService(
             totalGamesPlayed = totalGames,
             averageScore = averageScore,
             bestScore = bestScore,
-            currentStreak = currentStreak
+            currentStreak = currentStreak,
         )
     }
 

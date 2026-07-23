@@ -40,7 +40,8 @@ export function LandingPage() {
               Un thème… et 60 secondes pour battre le record
             </h1>
             <p className="max-w-2xl text-base leading-7 text-foreground/80 sm:text-lg">
-              Chaque jour, une nouvelle catégorie. Trouve un maximum de mots, marque des points et grimpe dans le classement.
+              Chaque jour, une nouvelle catégorie. Trouve un maximum de mots, marque des points et
+              grimpe dans le classement.
             </p>
           </div>
           <div>
@@ -79,7 +80,9 @@ export function LandingPage() {
                   <div className="text-xs font-black uppercase tracking-[0.2em] text-black/70">
                     Score
                   </div>
-                  <div className="mt-1 font-head text-xl uppercase text-black">+1 point par mot</div>
+                  <div className="mt-1 font-head text-xl uppercase text-black">
+                    +1 point par mot
+                  </div>
                 </div>
               </div>
             </Card.Content>
@@ -157,11 +160,16 @@ export function LandingPage() {
                 body: "Compare ton score aux meilleurs joueurs et fais durer ta série.",
               },
             ].map((item, index) => (
-              <div key={item.title} className="space-y-3 border-2 border-black bg-white p-4 shadow-[4px_4px_0_0_#000]">
+              <div
+                key={item.title}
+                className="space-y-3 border-2 border-black bg-white p-4 shadow-[4px_4px_0_0_#000]"
+              >
                 <div className="text-xs font-black uppercase tracking-[0.22em] text-black/50">
                   0{index + 1}
                 </div>
-                <div className="font-head text-xl uppercase text-black sm:text-2xl">{item.title}</div>
+                <div className="font-head text-xl uppercase text-black sm:text-2xl">
+                  {item.title}
+                </div>
                 <p className="text-sm leading-6 text-black/70">{item.body}</p>
               </div>
             ))}

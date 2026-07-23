@@ -1,20 +1,20 @@
-package com.axelfrache.listle.service
+package com.axelfrache.daydash.service
 
-import com.axelfrache.listle.dto.request.WordSubmissionRequest
-import com.axelfrache.listle.dto.response.GameFinishResponse
-import com.axelfrache.listle.dto.response.GameHistoryItemResponse
-import com.axelfrache.listle.dto.response.GameHistoryResponse
-import com.axelfrache.listle.dto.response.GameStartResponse
-import com.axelfrache.listle.dto.response.SubmissionResponse
-import com.axelfrache.listle.entity.GameSession
-import com.axelfrache.listle.entity.GameStatus
-import com.axelfrache.listle.entity.GameSubmission
-import com.axelfrache.listle.exception.GameLogicException
-import com.axelfrache.listle.exception.ResourceNotFoundException
-import com.axelfrache.listle.repository.CategoryWordRepository
-import com.axelfrache.listle.repository.GameSessionRepository
-import com.axelfrache.listle.repository.GameSubmissionRepository
-import com.axelfrache.listle.util.WordNormalizer
+import com.axelfrache.daydash.dto.request.WordSubmissionRequest
+import com.axelfrache.daydash.dto.response.GameFinishResponse
+import com.axelfrache.daydash.dto.response.GameHistoryItemResponse
+import com.axelfrache.daydash.dto.response.GameHistoryResponse
+import com.axelfrache.daydash.dto.response.GameStartResponse
+import com.axelfrache.daydash.dto.response.SubmissionResponse
+import com.axelfrache.daydash.entity.GameSession
+import com.axelfrache.daydash.entity.GameStatus
+import com.axelfrache.daydash.entity.GameSubmission
+import com.axelfrache.daydash.exception.GameLogicException
+import com.axelfrache.daydash.exception.ResourceNotFoundException
+import com.axelfrache.daydash.repository.CategoryWordRepository
+import com.axelfrache.daydash.repository.GameSessionRepository
+import com.axelfrache.daydash.repository.GameSubmissionRepository
+import com.axelfrache.daydash.util.WordNormalizer
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -27,29 +27,34 @@ class GameService(
     private val gameSubmissionRepository: GameSubmissionRepository,
     private val dailyCategoryResolverService: DailyCategoryResolverService,
     private val categoryWordRepository: CategoryWordRepository,
-    private val statsService: StatsService
+    private val statsService: StatsService,
 ) {
-    fun getHistory(userId: String, page: Int, size: Int): GameHistoryResponse {
+    fun getHistory(
+        userId: String,
+        page: Int,
+        size: Int,
+    ): GameHistoryResponse {
         val pageable = PageRequest.of(page, size)
         val sessionsPage = gameSessionRepository.findByUserIdOrderByStartedAtDesc(userId, pageable)
-        val items = sessionsPage.content.map { session ->
-            GameHistoryItemResponse(
-                gameId = session.id!!,
-                categoryId = session.categoryId,
-                startedAt = session.startedAt,
-                finishedAt = session.finishedAt,
-                score = session.score,
-                foundCount = session.foundCount,
-                status = session.status
-            )
-        }
+        val items =
+            sessionsPage.content.map { session ->
+                GameHistoryItemResponse(
+                    gameId = session.id!!,
+                    categoryId = session.categoryId,
+                    startedAt = session.startedAt,
+                    finishedAt = session.finishedAt,
+                    score = session.score,
+                    foundCount = session.foundCount,
+                    status = session.status,
+                )
+            }
 
         return GameHistoryResponse(
             items = items,
             page = sessionsPage.number,
             size = sessionsPage.size,
             totalElements = sessionsPage.totalElements,
-            totalPages = sessionsPage.totalPages
+            totalPages = sessionsPage.totalPages,
         )
     }
 
@@ -57,22 +62,29 @@ class GameService(
     fun startGame(userId: String): GameStartResponse {
         val dailyCategory = dailyCategoryResolverService.getOrCreateDailyCategory()
 
-        val session = GameSession(
-            userId = userId,
-            categoryId = dailyCategory.categoryId
-        )
+        val session =
+            GameSession(
+                userId = userId,
+                categoryId = dailyCategory.categoryId,
+            )
         val savedSession = gameSessionRepository.save(session)
-        
+
         return GameStartResponse(
             gameId = savedSession.id!!,
-            startedAt = savedSession.startedAt
+            startedAt = savedSession.startedAt,
         )
     }
 
     @Transactional
-    fun submitWord(userId: String, gameId: String, request: WordSubmissionRequest): SubmissionResponse {
-        val session = gameSessionRepository.findById(gameId)
-            .orElseThrow { ResourceNotFoundException("Session de jeu introuvable") }
+    fun submitWord(
+        userId: String,
+        gameId: String,
+        request: WordSubmissionRequest,
+    ): SubmissionResponse {
+        val session =
+            gameSessionRepository
+                .findById(gameId)
+                .orElseThrow { ResourceNotFoundException("Session de jeu introuvable") }
 
         if (session.userId != userId) {
             throw GameLogicException("Impossible d'envoyer un mot sur la partie d'un autre joueur")
@@ -86,9 +98,10 @@ class GameService(
         }
 
         val candidates = WordNormalizer.candidates(request.word)
-        val matchedNormalized = candidates.firstOrNull {
-            categoryWordRepository.existsByCategoryIdAndNormalizedLabel(session.categoryId, it)
-        }
+        val matchedNormalized =
+            candidates.firstOrNull {
+                categoryWordRepository.existsByCategoryIdAndNormalizedLabel(session.categoryId, it)
+            }
         val normalized = matchedNormalized ?: candidates.firstOrNull() ?: ""
         val isValid = matchedNormalized != null
         var duplicate = false
@@ -104,26 +117,32 @@ class GameService(
             }
         }
 
-        val submission = GameSubmission(
-            gameSessionId = session.id!!,
-            submittedValue = request.word,
-            normalizedValue = normalized,
-            isValid = isValid
-        )
+        val submission =
+            GameSubmission(
+                gameSessionId = session.id!!,
+                submittedValue = request.word,
+                normalizedValue = normalized,
+                isValid = isValid,
+            )
         gameSubmissionRepository.save(submission)
 
         return SubmissionResponse(
             valid = isValid,
             duplicate = duplicate,
             scoreDelta = scoreDelta,
-            foundCount = session.foundCount
+            foundCount = session.foundCount,
         )
     }
 
     @Transactional
-    fun finishGame(userId: String, gameId: String): GameFinishResponse {
-        val session = gameSessionRepository.findById(gameId)
-            .orElseThrow { ResourceNotFoundException("Session de jeu introuvable") }
+    fun finishGame(
+        userId: String,
+        gameId: String,
+    ): GameFinishResponse {
+        val session =
+            gameSessionRepository
+                .findById(gameId)
+                .orElseThrow { ResourceNotFoundException("Session de jeu introuvable") }
 
         if (session.userId != userId) {
             throw GameLogicException("Impossible de terminer la partie d'un autre joueur")
@@ -136,12 +155,13 @@ class GameService(
         val bestScore = gameSessionRepository.findTopByUserIdAndStatusOrderByScoreDesc(userId, GameStatus.FINISHED)?.score ?: session.score
         val currentStreak = statsService.getOverview(userId).currentStreak
         val allScores = gameSessionRepository.findByStatus(GameStatus.FINISHED).map { it.score }
-        val percentile = if (allScores.isEmpty()) {
-            if (session.score > 0) 80 else 50
-        } else {
-            val lowerOrEqual = allScores.count { it <= session.score }
-            ((lowerOrEqual.toDouble() / allScores.size.toDouble()) * 100.0).roundToInt().coerceIn(1, 99)
-        }
+        val percentile =
+            if (allScores.isEmpty()) {
+                if (session.score > 0) 80 else 50
+            } else {
+                val lowerOrEqual = allScores.count { it <= session.score }
+                ((lowerOrEqual.toDouble() / allScores.size.toDouble()) * 100.0).roundToInt().coerceIn(1, 99)
+            }
 
         return GameFinishResponse(
             gameId = session.id!!,
@@ -149,7 +169,7 @@ class GameService(
             foundCount = session.foundCount,
             bestScore = bestScore,
             currentStreak = currentStreak,
-            percentile = percentile
+            percentile = percentile,
         )
     }
 

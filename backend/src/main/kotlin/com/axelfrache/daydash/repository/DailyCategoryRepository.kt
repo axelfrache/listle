@@ -1,6 +1,6 @@
-package com.axelfrache.listle.repository
+package com.axelfrache.daydash.repository
 
-import com.axelfrache.listle.entity.DailyCategory
+import com.axelfrache.daydash.entity.DailyCategory
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 import java.time.LocalDate

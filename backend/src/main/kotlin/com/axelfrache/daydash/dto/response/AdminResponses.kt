@@ -1,4 +1,4 @@
-package com.axelfrache.listle.dto.response
+package com.axelfrache.daydash.dto.response
 
 data class CategorySyncResponse(
     val slug: String,
@@ -7,13 +7,13 @@ data class CategorySyncResponse(
     val added: Int,
     val skipped: Int,
     val totalWords: Long,
-    val error: String? = null
+    val error: String? = null,
 )
 
 data class CategorySyncAllResponse(
     val synced: Int,
     val failed: Int,
-    val results: List<CategorySyncResponse>
+    val results: List<CategorySyncResponse>,
 )
 
 data class ScheduleItemResponse(
@@ -21,7 +21,7 @@ data class ScheduleItemResponse(
     val slug: String,
     val name: String,
     val wordCount: Long,
-    val frozen: Boolean
+    val frozen: Boolean,
 )
 
 data class AdminCategoryResponse(
@@ -30,5 +30,5 @@ data class AdminCategoryResponse(
     val difficulty: Int,
     val active: Boolean,
     val source: String?,
-    val wordCount: Long
+    val wordCount: Long,
 )

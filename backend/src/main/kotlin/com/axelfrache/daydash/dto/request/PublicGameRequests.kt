@@ -1,11 +1,11 @@
-package com.axelfrache.listle.dto.request
+package com.axelfrache.daydash.dto.request
 
 data class PublicWordEvaluationRequest(
     val categoryId: String,
     val existingWords: List<String>,
-    val rawWord: String
+    val rawWord: String,
 )
 
 data class PublicFinalizeGameRequest(
-    val words: List<String>
+    val words: List<String>,
 )

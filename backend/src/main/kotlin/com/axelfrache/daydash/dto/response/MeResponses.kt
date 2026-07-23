@@ -1,21 +1,21 @@
-package com.axelfrache.listle.dto.response
+package com.axelfrache.daydash.dto.response
 
 data class MeStatPointResponse(
     val label: String,
-    val value: Int
+    val value: Int,
 )
 
 data class MeCategoryPerformanceResponse(
     val category: String,
     val averageScore: Double,
-    val bestScore: Int
+    val bestScore: Int,
 )
 
 data class MeRecentGameResponse(
     val date: String,
     val category: String,
     val score: Int,
-    val percentile: Int
+    val percentile: Int,
 )
 
 data class MeStatsResponse(
@@ -26,20 +26,20 @@ data class MeStatsResponse(
     val totalWordsFound: Int,
     val strongestCategories: List<MeCategoryPerformanceResponse>,
     val recentHistory: List<MeRecentGameResponse>,
-    val weeklyTrend: List<MeStatPointResponse>
+    val weeklyTrend: List<MeStatPointResponse>,
 )
 
 data class MeAchievementResponse(
     val id: String,
     val label: String,
-    val description: String
+    val description: String,
 )
 
 data class MeProfileStatsResponse(
     val averageScore: Double,
     val bestScore: Int,
     val gamesPlayed: Long,
-    val currentStreak: Int
+    val currentStreak: Int,
 )
 
 data class MeProfileResponse(
@@ -49,5 +49,5 @@ data class MeProfileResponse(
     val tagline: String,
     val avatarLetters: String,
     val badges: List<MeAchievementResponse>,
-    val stats: MeProfileStatsResponse
+    val stats: MeProfileStatsResponse,
 )

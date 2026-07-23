@@ -7,12 +7,7 @@ interface TabsProps<T extends string> {
   className?: string
 }
 
-export function Tabs<T extends string>({
-  items,
-  value,
-  onChange,
-  className,
-}: TabsProps<T>) {
+export function Tabs<T extends string>({ items, value, onChange, className }: TabsProps<T>) {
   return (
     <div className={cn("grid w-full grid-cols-1 gap-2 sm:flex sm:flex-wrap sm:gap-3", className)}>
       {items.map((item) => {

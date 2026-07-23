@@ -1,5 +1,5 @@
-package com.axelfrache.listle.dto.request
+package com.axelfrache.daydash.dto.request
 
 data class WordSubmissionRequest(
-    val word: String
+    val word: String,
 )

@@ -1,11 +1,11 @@
-package com.axelfrache.listle.dto.response
+package com.axelfrache.daydash.dto.response
 
 data class PublicCategoryResponse(
     val id: String,
     val name: String,
     val description: String,
     val accent: String,
-    val words: List<String>
+    val words: List<String>,
 )
 
 data class PublicLeaderboardEntryResponse(
@@ -13,25 +13,25 @@ data class PublicLeaderboardEntryResponse(
     val username: String,
     val score: Int,
     val streak: Int,
-    val isCurrentUser: Boolean
+    val isCurrentUser: Boolean,
 )
 
 data class PublicStatPointResponse(
     val label: String,
-    val value: Int
+    val value: Int,
 )
 
 data class PublicCategoryPerformanceResponse(
     val category: String,
     val averageScore: Double,
-    val bestScore: Int
+    val bestScore: Int,
 )
 
 data class PublicRecentGameResponse(
     val date: String,
     val category: String,
     val score: Int,
-    val percentile: Int
+    val percentile: Int,
 )
 
 data class PublicUserStatsResponse(
@@ -42,20 +42,20 @@ data class PublicUserStatsResponse(
     val totalWordsFound: Int,
     val strongestCategories: List<PublicCategoryPerformanceResponse>,
     val recentHistory: List<PublicRecentGameResponse>,
-    val weeklyTrend: List<PublicStatPointResponse>
+    val weeklyTrend: List<PublicStatPointResponse>,
 )
 
 data class PublicAchievementResponse(
     val id: String,
     val label: String,
-    val description: String
+    val description: String,
 )
 
 data class PublicUserProfileStatsResponse(
     val averageScore: Double,
     val bestScore: Int,
     val gamesPlayed: Long,
-    val currentStreak: Int
+    val currentStreak: Int,
 )
 
 data class PublicUserProfileResponse(
@@ -64,7 +64,7 @@ data class PublicUserProfileResponse(
     val tagline: String,
     val avatarLetters: String,
     val badges: List<PublicAchievementResponse>,
-    val stats: PublicUserProfileStatsResponse
+    val stats: PublicUserProfileStatsResponse,
 )
 
 data class PublicDailySnapshotResponse(
@@ -72,19 +72,19 @@ data class PublicDailySnapshotResponse(
     val category: PublicCategoryResponse,
     val userBestScore: Int,
     val userStreak: Int,
-    val leaderboardPreview: List<PublicLeaderboardEntryResponse>
+    val leaderboardPreview: List<PublicLeaderboardEntryResponse>,
 )
 
 data class PublicDashboardResponse(
     val snapshot: PublicDailySnapshotResponse,
     val stats: PublicUserStatsResponse,
-    val profile: PublicUserProfileResponse
+    val profile: PublicUserProfileResponse,
 )
 
 data class PublicWordSubmissionResultResponse(
     val status: String,
     val normalized: String,
-    val scoreDelta: Int
+    val scoreDelta: Int,
 )
 
 data class PublicGameResultResponse(
@@ -92,5 +92,5 @@ data class PublicGameResultResponse(
     val words: List<String>,
     val bestScore: Int,
     val streak: Int,
-    val percentile: Int
+    val percentile: Int,
 )

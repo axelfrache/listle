@@ -15,6 +15,9 @@ trim_trailing_whitespace = true
 indent_size = 4
 max_line_length = 120
 ij_kotlin_imports_layout = *,java.**,javax.**,kotlin.**,^
+ktlint_standard_no-wildcard-imports = disabled
+ktlint_standard_filename = disabled
+ktlint_standard_max-line-length = disabled
 
 [*.{xml,yml,yaml,json}]
 indent_size = 2

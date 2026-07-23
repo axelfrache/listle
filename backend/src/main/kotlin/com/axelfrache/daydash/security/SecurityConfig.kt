@@ -1,4 +1,4 @@
-package com.axelfrache.listle.security
+package com.axelfrache.daydash.security
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -20,37 +20,31 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 @EnableWebSecurity
 class SecurityConfig(
     private val tokenProvider: JwtTokenProvider,
-    private val userDetailsService: UserDetailsServiceImpl
+    private val userDetailsService: UserDetailsServiceImpl,
 ) {
     @Bean
-    fun jwtAuthenticationFilter(): JwtAuthenticationFilter {
-        return JwtAuthenticationFilter(tokenProvider, userDetailsService)
-    }
-
+    fun jwtAuthenticationFilter(): JwtAuthenticationFilter = JwtAuthenticationFilter(tokenProvider, userDetailsService)
 
     @Bean
-    fun passwordEncoder(): PasswordEncoder {
-        return BCryptPasswordEncoder()
-    }
+    fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
 
     @Bean
-    fun authenticationManager(authenticationConfiguration: AuthenticationConfiguration): AuthenticationManager {
-        return authenticationConfiguration.authenticationManager
-    }
+    fun authenticationManager(authenticationConfiguration: AuthenticationConfiguration): AuthenticationManager = authenticationConfiguration.authenticationManager
 
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {
         val configuration = CorsConfiguration()
-        configuration.allowedOriginPatterns = listOf(
-            "http://localhost",
-            "http://127.0.0.1",
-            "http://localhost:80",
-            "http://127.0.0.1:80",
-            "http://localhost:5173",
-            "http://127.0.0.1:5173",
-            "https://gazo.axelfrache.com",
-            "https://*.axelfrache.com"
-        )
+        configuration.allowedOriginPatterns =
+            listOf(
+                "http://localhost",
+                "http://127.0.0.1",
+                "http://localhost:80",
+                "http://127.0.0.1:80",
+                "http://localhost:5173",
+                "http://127.0.0.1:5173",
+                "https://gazo.axelfrache.com",
+                "https://*.axelfrache.com",
+            )
         configuration.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
         configuration.allowedHeaders = listOf("*")
         configuration.allowCredentials = false
@@ -62,24 +56,26 @@ class SecurityConfig(
 
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
-        http.csrf { it.disable() }
+        http
+            .csrf { it.disable() }
             .cors { }
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .authorizeHttpRequests {
                 it.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                it.requestMatchers(
-                    "/api/v1/auth/register",
-                    "/api/v1/auth/login",
-                    "/api/v1/public/**",
-                    "/api/v1/categories/daily",
-                    "/api/v1/leaderboards/**",
-                    "/v3/api-docs",
-                    "/v3/api-docs/**",
-                    "/swagger-ui/**",
-                    "/swagger-ui.html",
-                    "/swagger-resources/**",
-                    "/webjars/**"
-                ).permitAll()
+                it
+                    .requestMatchers(
+                        "/api/v1/auth/register",
+                        "/api/v1/auth/login",
+                        "/api/v1/public/**",
+                        "/api/v1/categories/daily",
+                        "/api/v1/leaderboards/**",
+                        "/v3/api-docs",
+                        "/v3/api-docs/**",
+                        "/swagger-ui/**",
+                        "/swagger-ui.html",
+                        "/swagger-resources/**",
+                        "/webjars/**",
+                    ).permitAll()
                 it.requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                 it.anyRequest().authenticated()
             }

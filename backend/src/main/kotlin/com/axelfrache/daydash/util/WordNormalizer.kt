@@ -1,22 +1,22 @@
-package com.axelfrache.listle.util
+package com.axelfrache.daydash.util
 
 import java.text.Normalizer
 
 object WordNormalizer {
-    fun normalize(word: String): String {
-        return normalizeBase(word)
+    fun normalize(word: String): String =
+        normalizeBase(word)
             .replace("['\\-]".toRegex(), "")
             .trim()
             .lowercase()
-    }
 
     fun candidates(word: String): List<String> {
         val base = normalize(word)
-        val spaced = normalizeBase(word)
-            .replace("['’`\\-]".toRegex(), " ")
-            .replace("[^a-z0-9\\s]".toRegex(), " ")
-            .trim()
-            .replace("\\s+".toRegex(), " ")
+        val spaced =
+            normalizeBase(word)
+                .replace("['’`\\-]".toRegex(), " ")
+                .replace("[^a-z0-9\\s]".toRegex(), " ")
+                .trim()
+                .replace("\\s+".toRegex(), " ")
 
         val elisionTokens = setOf("d", "l", "j", "m", "t", "s", "c", "n", "qu")
         val linkerTokens = setOf("de", "du", "des")
@@ -31,9 +31,9 @@ object WordNormalizer {
             .distinct()
     }
 
-    private fun normalizeBase(word: String): String {
-        return Normalizer.normalize(word, Normalizer.Form.NFD)
+    private fun normalizeBase(word: String): String =
+        Normalizer
+            .normalize(word, Normalizer.Form.NFD)
             .replace("\\p{M}".toRegex(), "")
             .lowercase()
-    }
 }

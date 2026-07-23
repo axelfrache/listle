@@ -1,10 +1,10 @@
-package com.axelfrache.listle.service
+package com.axelfrache.daydash.service
 
-import com.axelfrache.listle.entity.Category
-import com.axelfrache.listle.entity.DailyCategory
-import com.axelfrache.listle.exception.ResourceNotFoundException
-import com.axelfrache.listle.repository.CategoryRepository
-import com.axelfrache.listle.repository.DailyCategoryRepository
+import com.axelfrache.daydash.entity.Category
+import com.axelfrache.daydash.entity.DailyCategory
+import com.axelfrache.daydash.exception.ResourceNotFoundException
+import com.axelfrache.daydash.repository.CategoryRepository
+import com.axelfrache.daydash.repository.DailyCategoryRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.security.MessageDigest
@@ -13,7 +13,7 @@ import java.time.LocalDate
 @Service
 class DailyCategoryResolverService(
     private val dailyCategoryRepository: DailyCategoryRepository,
-    private val categoryRepository: CategoryRepository
+    private val categoryRepository: CategoryRepository,
 ) {
     @Transactional
     fun getOrCreateDailyCategory(date: LocalDate = LocalDate.now()): DailyCategory {
@@ -34,21 +34,22 @@ class DailyCategoryResolverService(
         return dailyCategoryRepository.save(
             DailyCategory(
                 date = date,
-                categoryId = chosenCategoryId
-            )
+                categoryId = chosenCategoryId,
+            ),
         )
     }
 
     fun resolveCategoryForDate(date: LocalDate = LocalDate.now()): Category {
         val dailyCategory = getOrCreateDailyCategory(date)
-        return categoryRepository.findById(dailyCategory.categoryId)
+        return categoryRepository
+            .findById(dailyCategory.categoryId)
             .orElseThrow { ResourceNotFoundException("Catégorie introuvable pour la rotation quotidienne") }
     }
 
-    fun activeCategoriesInRotationOrder(): List<Category> {
-        return categoryRepository.findByIsActiveTrueOrderBySlugAsc()
+    fun activeCategoriesInRotationOrder(): List<Category> =
+        categoryRepository
+            .findByIsActiveTrueOrderBySlugAsc()
             .sortedBy { rotationKey(it.slug) }
-    }
 
     private fun rotationKey(slug: String): String {
         val digest = MessageDigest.getInstance("MD5").digest("$ROTATION_SEED$slug".toByteArray())
@@ -56,6 +57,6 @@ class DailyCategoryResolverService(
     }
 
     companion object {
-        private const val ROTATION_SEED = "listle-v1:"
+        private const val ROTATION_SEED = "daydash-v1:"
     }
 }

@@ -1,12 +1,12 @@
-package com.axelfrache.listle.service
+package com.axelfrache.daydash.service
 
-import com.axelfrache.listle.dto.request.UpdatePasswordRequest
-import com.axelfrache.listle.dto.request.UpdateUsernameRequest
-import com.axelfrache.listle.dto.response.AuthResponse
-import com.axelfrache.listle.entity.User
-import com.axelfrache.listle.exception.GameLogicException
-import com.axelfrache.listle.repository.UserRepository
-import com.axelfrache.listle.security.JwtTokenProvider
+import com.axelfrache.daydash.dto.request.UpdatePasswordRequest
+import com.axelfrache.daydash.dto.request.UpdateUsernameRequest
+import com.axelfrache.daydash.dto.response.AuthResponse
+import com.axelfrache.daydash.entity.User
+import com.axelfrache.daydash.exception.GameLogicException
+import com.axelfrache.daydash.repository.UserRepository
+import com.axelfrache.daydash.security.JwtTokenProvider
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -15,10 +15,13 @@ import org.springframework.transaction.annotation.Transactional
 class AccountService(
     private val userRepository: UserRepository,
     private val passwordEncoder: PasswordEncoder,
-    private val tokenProvider: JwtTokenProvider
+    private val tokenProvider: JwtTokenProvider,
 ) {
     @Transactional
-    fun updateUsername(user: User, request: UpdateUsernameRequest): AuthResponse {
+    fun updateUsername(
+        user: User,
+        request: UpdateUsernameRequest,
+    ): AuthResponse {
         val newUsername = request.username.trim()
         if (newUsername.length < 3 || newUsername.length > 20) {
             throw GameLogicException("Le nom d'utilisateur doit contenir entre 3 et 20 caractères.")
@@ -37,7 +40,10 @@ class AccountService(
     }
 
     @Transactional
-    fun updatePassword(user: User, request: UpdatePasswordRequest) {
+    fun updatePassword(
+        user: User,
+        request: UpdatePasswordRequest,
+    ) {
         if (!passwordEncoder.matches(request.currentPassword, user.passwordHash)) {
             throw GameLogicException("Le mot de passe actuel est incorrect.")
         }

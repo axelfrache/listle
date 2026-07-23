@@ -1,6 +1,6 @@
-package com.axelfrache.listle.entity
+package com.axelfrache.daydash.entity
 
 enum class GameStatus {
     ACTIVE,
-    FINISHED
+    FINISHED,
 }

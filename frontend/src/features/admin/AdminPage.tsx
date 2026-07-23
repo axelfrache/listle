@@ -40,7 +40,9 @@ export function AdminPage() {
     setMessage(null)
     try {
       const result = await syncCategory(slug)
-      setMessage(`« ${slug} » synchronisée : ${result.added} ajoutés, ${result.totalWords} mots au total.`)
+      setMessage(
+        `« ${slug} » synchronisée : ${result.added} ajoutés, ${result.totalWords} mots au total.`,
+      )
       setRefreshKey((key) => key + 1)
     } catch {
       setMessage(`Échec de la synchronisation de « ${slug} ».`)
@@ -54,7 +56,9 @@ export function AdminPage() {
     setMessage(null)
     try {
       const result = await syncAllCategories()
-      setMessage(`Synchronisation globale : ${result.synced} catégories OK, ${result.failed} en échec.`)
+      setMessage(
+        `Synchronisation globale : ${result.synced} catégories OK, ${result.failed} en échec.`,
+      )
       setRefreshKey((key) => key + 1)
     } catch {
       setMessage("Échec de la synchronisation globale.")
@@ -89,7 +93,8 @@ export function AdminPage() {
             <CalendarDays className="size-5" /> Catégories à venir (14 jours)
           </Card.Title>
           <Card.Description>
-            Projection basée sur la rotation. Une catégorie non figée peut encore changer si tu actives/désactives des thèmes.
+            Projection basée sur la rotation. Une catégorie non figée peut encore changer si tu
+            actives/désactives des thèmes.
           </Card.Description>
         </Card.Header>
         <Card.Content className="p-0 text-black">
@@ -98,7 +103,9 @@ export function AdminPage() {
               <Loader />
             </div>
           ) : schedule.error || !schedule.data ? (
-            <div className="p-8 text-center text-sm text-black/60">Impossible de charger le planning.</div>
+            <div className="p-8 text-center text-sm text-black/60">
+              Impossible de charger le planning.
+            </div>
           ) : (
             <Table className="border-0 shadow-none text-black">
               <Table.Header>
@@ -113,14 +120,22 @@ export function AdminPage() {
                 {schedule.data.map((item, index) => (
                   <Table.Row
                     key={item.date}
-                    className={index === 0 ? "bg-[#68f2a3] text-black" : "text-black hover:bg-black/5"}
+                    className={
+                      index === 0 ? "bg-[#68f2a3] text-black" : "text-black hover:bg-black/5"
+                    }
                   >
-                    <Table.Cell className="font-black uppercase">{formatDate(item.date)}</Table.Cell>
-                    <Table.Cell className="font-head text-base uppercase sm:text-lg">{item.name}</Table.Cell>
+                    <Table.Cell className="font-black uppercase">
+                      {formatDate(item.date)}
+                    </Table.Cell>
+                    <Table.Cell className="font-head text-base uppercase sm:text-lg">
+                      {item.name}
+                    </Table.Cell>
                     <Table.Cell>
                       <span className="inline-flex items-center gap-2">
                         {item.wordCount}
-                        {item.wordCount === 0 ? <AlertTriangle className="size-4 text-[#c0392b]" /> : null}
+                        {item.wordCount === 0 ? (
+                          <AlertTriangle className="size-4 text-[#c0392b]" />
+                        ) : null}
                       </span>
                     </Table.Cell>
                     <Table.Cell className="text-right">
@@ -143,7 +158,9 @@ export function AdminPage() {
       <Card className="w-full border-black bg-white shadow-[12px_12px_0_0_#000]">
         <Card.Header className="border-b-2 border-black">
           <Card.Title className="text-black">Catégories</Card.Title>
-          <Card.Description>Source, nombre de mots en cache et resynchronisation individuelle.</Card.Description>
+          <Card.Description>
+            Source, nombre de mots en cache et resynchronisation individuelle.
+          </Card.Description>
         </Card.Header>
         <Card.Content className="p-0 text-black">
           {categories.loading ? (
@@ -151,7 +168,9 @@ export function AdminPage() {
               <Loader />
             </div>
           ) : categories.error || !categories.data ? (
-            <div className="p-8 text-center text-sm text-black/60">Impossible de charger les catégories.</div>
+            <div className="p-8 text-center text-sm text-black/60">
+              Impossible de charger les catégories.
+            </div>
           ) : (
             <Table className="border-0 shadow-none text-black">
               <Table.Header>
@@ -169,10 +188,18 @@ export function AdminPage() {
                     <Table.Row key={category.slug} className="text-black hover:bg-black/5">
                       <Table.Cell className="font-head text-base uppercase sm:text-lg">
                         {category.name}
-                        {!category.active ? <Badge tone="danger" className="ml-2">Inactive</Badge> : null}
+                        {!category.active ? (
+                          <Badge tone="danger" className="ml-2">
+                            Inactive
+                          </Badge>
+                        ) : null}
                       </Table.Cell>
                       <Table.Cell className="text-xs">
-                        {hasSource ? category.source : <span className="text-black/50">manuelle</span>}
+                        {hasSource ? (
+                          category.source
+                        ) : (
+                          <span className="text-black/50">manuelle</span>
+                        )}
                       </Table.Cell>
                       <Table.Cell>{category.wordCount}</Table.Cell>
                       <Table.Cell className="text-right">

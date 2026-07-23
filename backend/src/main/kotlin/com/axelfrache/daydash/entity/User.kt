@@ -1,4 +1,4 @@
-package com.axelfrache.listle.entity
+package com.axelfrache.daydash.entity
 
 import jakarta.persistence.*
 import java.time.LocalDateTime
@@ -9,19 +9,14 @@ class User(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     val id: String? = null,
-
     @Column(unique = true, nullable = false)
     val email: String,
-
     @Column(unique = true, nullable = false)
     var username: String,
-
     @Column(nullable = false)
     var passwordHash: String,
-
     @Column(nullable = false)
     val role: String = "ROLE_USER",
-
     @Column(nullable = false, updatable = false)
-    val createdAt: LocalDateTime = LocalDateTime.now()
+    val createdAt: LocalDateTime = LocalDateTime.now(),
 )

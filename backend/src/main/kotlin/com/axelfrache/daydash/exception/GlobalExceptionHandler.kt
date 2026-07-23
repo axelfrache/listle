@@ -1,4 +1,4 @@
-package com.axelfrache.listle.exception
+package com.axelfrache.daydash.exception
 
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 
 @ControllerAdvice
 class GlobalExceptionHandler {
-
     private val log = LoggerFactory.getLogger(GlobalExceptionHandler::class.java)
 
     @ExceptionHandler(ResourceNotFoundException::class)
@@ -26,7 +25,11 @@ class GlobalExceptionHandler {
     @ExceptionHandler(Exception::class)
     fun handleGlobalException(ex: Exception): ResponseEntity<Any> {
         log.error("Exception non gérée: ", ex)
-        val body = mapOf("error" to "Erreur interne du serveur", "message" to "Une erreur inattendue est survenue: ${ex.message}")
+        val body =
+            mapOf(
+                "error" to "Erreur interne du serveur",
+                "message" to "Une erreur inattendue est survenue: ${ex.message}",
+            )
         return ResponseEntity(body, HttpStatus.INTERNAL_SERVER_ERROR)
     }
 }

@@ -1,4 +1,4 @@
-package com.axelfrache.listle
+package com.axelfrache.daydash
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -6,8 +6,8 @@ import org.springframework.scheduling.annotation.EnableScheduling
 
 @SpringBootApplication
 @EnableScheduling
-class ListleApplication
+class DaydashApplication
 
 fun main(args: Array<String>) {
-    runApplication<ListleApplication>(*args)
+    runApplication<DaydashApplication>(*args)
 }

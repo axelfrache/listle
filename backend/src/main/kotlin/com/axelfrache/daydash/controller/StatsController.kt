@@ -1,9 +1,9 @@
-package com.axelfrache.listle.controller
+package com.axelfrache.daydash.controller
 
-import com.axelfrache.listle.dto.response.StatsOverviewResponse
-import com.axelfrache.listle.exception.ResourceNotFoundException
-import com.axelfrache.listle.repository.UserRepository
-import com.axelfrache.listle.service.StatsService
+import com.axelfrache.daydash.dto.response.StatsOverviewResponse
+import com.axelfrache.daydash.exception.ResourceNotFoundException
+import com.axelfrache.daydash.repository.UserRepository
+import com.axelfrache.daydash.service.StatsService
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.core.userdetails.UserDetails
@@ -15,14 +15,16 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/v1/stats")
 class StatsController(
     private val statsService: StatsService,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
 ) {
-
     @GetMapping("/me/overview")
-    fun getMyStatsOverview(@AuthenticationPrincipal userDetails: UserDetails): ResponseEntity<StatsOverviewResponse> {
-        val user = userRepository.findByUsername(userDetails.username)
-            ?: throw ResourceNotFoundException("Utilisateur introuvable")
-            
+    fun getMyStatsOverview(
+        @AuthenticationPrincipal userDetails: UserDetails,
+    ): ResponseEntity<StatsOverviewResponse> {
+        val user =
+            userRepository.findByUsername(userDetails.username)
+                ?: throw ResourceNotFoundException("Utilisateur introuvable")
+
         return ResponseEntity.ok(statsService.getOverview(user.id!!))
     }
 }

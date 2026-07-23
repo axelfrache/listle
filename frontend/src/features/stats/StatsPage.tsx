@@ -109,7 +109,9 @@ export function StatsPage() {
       <Card className="border-black bg-[#fff7d6] shadow-[8px_8px_0_0_#000] sm:shadow-[12px_12px_0_0_#000]">
         <Card.Header className="border-b-2 border-black">
           <Card.Title className="text-black">Historique récent</Card.Title>
-          <Card.Description>Un résumé compact de tes dernières catégories et scores.</Card.Description>
+          <Card.Description>
+            Un résumé compact de tes dernières catégories et scores.
+          </Card.Description>
         </Card.Header>
         <Card.Content className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
           {data.recentHistory.map((entry) => (

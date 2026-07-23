@@ -175,8 +175,16 @@ const profile: UserProfile = {
   tagline: "Chasseur de mots quotidien avec un faible pour les catégories rapides.",
   avatarLetters: "TO",
   badges: [
-    { id: "1", label: "Série de 6 jours", description: "Six manches quotidiennes jouées d'affilée" },
-    { id: "2", label: "Folie des fruits", description: "A atteint 20 mots dans la catégorie Fruits" },
+    {
+      id: "1",
+      label: "Série de 6 jours",
+      description: "Six manches quotidiennes jouées d'affilée",
+    },
+    {
+      id: "2",
+      label: "Folie des fruits",
+      description: "A atteint 20 mots dans la catégorie Fruits",
+    },
     { id: "3", label: "Top 5 quotidien", description: "A terminé dans le top 5 quotidien" },
   ],
   stats: {

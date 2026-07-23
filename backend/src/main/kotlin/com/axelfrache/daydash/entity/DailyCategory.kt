@@ -1,4 +1,4 @@
-package com.axelfrache.listle.entity
+package com.axelfrache.daydash.entity
 
 import jakarta.persistence.*
 import java.time.LocalDate
@@ -8,7 +8,6 @@ import java.time.LocalDate
 class DailyCategory(
     @Id
     val date: LocalDate,
-
     @Column(nullable = false)
-    val categoryId: String
+    val categoryId: String,
 )

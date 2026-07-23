@@ -62,10 +62,7 @@ export interface UserProfile {
   tagline: string
   avatarLetters: string
   badges: Achievement[]
-  stats: Pick<
-    UserStats,
-    "averageScore" | "bestScore" | "gamesPlayed" | "currentStreak"
-  >
+  stats: Pick<UserStats, "averageScore" | "bestScore" | "gamesPlayed" | "currentStreak">
 }
 
 export interface DailySnapshot {

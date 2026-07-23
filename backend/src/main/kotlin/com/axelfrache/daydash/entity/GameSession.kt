@@ -1,4 +1,4 @@
-package com.axelfrache.listle.entity
+package com.axelfrache.daydash.entity
 
 import jakarta.persistence.*
 import java.time.LocalDateTime
@@ -9,26 +9,19 @@ class GameSession(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     val id: String? = null,
-
     @Column(nullable = false)
     val userId: String,
-
     @Column(nullable = false)
     val categoryId: String,
-
     @Column(nullable = false)
     val startedAt: LocalDateTime = LocalDateTime.now(),
-
     @Column
     var finishedAt: LocalDateTime? = null,
-
     @Column(nullable = false)
     var score: Int = 0,
-
     @Column(nullable = false)
     var foundCount: Int = 0,
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    var status: GameStatus = GameStatus.ACTIVE
+    var status: GameStatus = GameStatus.ACTIVE,
 )

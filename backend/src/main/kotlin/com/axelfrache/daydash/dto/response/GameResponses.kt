@@ -1,18 +1,18 @@
-package com.axelfrache.listle.dto.response
+package com.axelfrache.daydash.dto.response
 
-import com.axelfrache.listle.entity.GameStatus
+import com.axelfrache.daydash.entity.GameStatus
 import java.time.LocalDateTime
 
 data class GameStartResponse(
     val gameId: String,
-    val startedAt: LocalDateTime
+    val startedAt: LocalDateTime,
 )
 
 data class SubmissionResponse(
     val valid: Boolean,
     val duplicate: Boolean,
     val scoreDelta: Int,
-    val foundCount: Int
+    val foundCount: Int,
 )
 
 data class GameFinishResponse(
@@ -21,7 +21,7 @@ data class GameFinishResponse(
     val foundCount: Int,
     val bestScore: Int,
     val currentStreak: Int,
-    val percentile: Int
+    val percentile: Int,
 )
 
 data class GameHistoryItemResponse(
@@ -31,7 +31,7 @@ data class GameHistoryItemResponse(
     val finishedAt: LocalDateTime?,
     val score: Int,
     val foundCount: Int,
-    val status: GameStatus
+    val status: GameStatus,
 )
 
 data class GameHistoryResponse(
@@ -39,5 +39,5 @@ data class GameHistoryResponse(
     val page: Int,
     val size: Int,
     val totalElements: Long,
-    val totalPages: Int
+    val totalPages: Int,
 )

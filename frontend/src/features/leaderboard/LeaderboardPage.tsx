@@ -90,7 +90,9 @@ export function LeaderboardPage() {
           <Card className="w-full border-black bg-white shadow-[12px_12px_0_0_#000]">
             <Card.Header className="border-b-2 border-black">
               <Card.Title className="text-black">Classement complet</Card.Title>
-              <Card.Description>La ligne de l'utilisateur courant reste surlignée pour un repérage rapide.</Card.Description>
+              <Card.Description>
+                La ligne de l'utilisateur courant reste surlignée pour un repérage rapide.
+              </Card.Description>
             </Card.Header>
             <Card.Content className="p-0 text-black">
               {data.length === 0 ? (

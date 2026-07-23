@@ -1,6 +1,6 @@
-import type { ElementType, HTMLAttributes } from "react";
-import { type VariantProps, cva } from "class-variance-authority";
-import { cn } from "@/lib/utils";
+import type { ElementType, HTMLAttributes } from "react"
+import { type VariantProps, cva } from "class-variance-authority"
+import { cn } from "@/lib/utils"
 
 const textVariants = cva("font-head", {
   variants: {
@@ -19,19 +19,16 @@ const textVariants = cva("font-head", {
   defaultVariants: {
     as: "p",
   },
-});
+})
 
 interface TextProps
-  extends Omit<HTMLAttributes<HTMLElement>, "className">,
-    VariantProps<typeof textVariants> {
-  className?: string;
+  extends Omit<HTMLAttributes<HTMLElement>, "className">, VariantProps<typeof textVariants> {
+  className?: string
 }
 
 export const Text = (props: TextProps) => {
-  const { className, as, ...otherProps } = props;
-  const Tag: ElementType = as || "p";
+  const { className, as, ...otherProps } = props
+  const Tag: ElementType = as || "p"
 
-  return (
-    <Tag className={cn(textVariants({ as }), className)} {...otherProps} />
-  );
-};
+  return <Tag className={cn(textVariants({ as }), className)} {...otherProps} />
+}

@@ -1,12 +1,14 @@
-package com.axelfrache.listle.repository
+package com.axelfrache.daydash.repository
 
-import com.axelfrache.listle.entity.User
+import com.axelfrache.daydash.entity.User
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
 interface UserRepository : JpaRepository<User, String> {
     fun findByUsername(username: String): User?
+
     fun existsByUsername(username: String): Boolean
+
     fun existsByEmail(email: String): Boolean
 }

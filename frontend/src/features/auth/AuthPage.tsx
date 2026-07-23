@@ -39,7 +39,11 @@ export function AuthPage({ mode }: AuthPageProps) {
       }
       navigate("/play")
     } catch {
-      setError(isRegister ? "Impossible de créer le compte avec ces informations." : "Identifiant ou mot de passe invalide.")
+      setError(
+        isRegister
+          ? "Impossible de créer le compte avec ces informations."
+          : "Identifiant ou mot de passe invalide.",
+      )
     } finally {
       setSubmitting(false)
     }
@@ -50,7 +54,7 @@ export function AuthPage({ mode }: AuthPageProps) {
       <Card className="border-black bg-[#ffe45e] shadow-[8px_8px_0_0_#000] sm:shadow-[12px_12px_0_0_#000]">
         <Card.Content className="flex h-full flex-col justify-between gap-8 p-5 text-black sm:p-8">
           <div className="space-y-5">
-            <Badge tone="dark">Accès Word Clash</Badge>
+            <Badge tone="dark">Accès DayDash</Badge>
             <h1 className="font-head text-4xl uppercase leading-[0.9] tracking-[0.08em] sm:text-6xl sm:tracking-[0.12em]">
               {isRegister ? "Crée ton pseudo" : "Reprends le sprint"}
             </h1>
@@ -59,14 +63,16 @@ export function AuthPage({ mode }: AuthPageProps) {
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-3">
-            {["Catégories quotidiennes", "Historique du classement", "Suivi de progression"].map((item) => (
-              <div
-                key={item}
-                className="border-2 border-black bg-white p-4 text-sm font-black uppercase tracking-[0.16em] shadow-[4px_4px_0_0_#000]"
-              >
-                {item}
-              </div>
-            ))}
+            {["Catégories quotidiennes", "Historique du classement", "Suivi de progression"].map(
+              (item) => (
+                <div
+                  key={item}
+                  className="border-2 border-black bg-white p-4 text-sm font-black uppercase tracking-[0.16em] shadow-[4px_4px_0_0_#000]"
+                >
+                  {item}
+                </div>
+              ),
+            )}
           </div>
         </Card.Content>
       </Card>
@@ -92,7 +98,7 @@ export function AuthPage({ mode }: AuthPageProps) {
             {isRegister && (
               <Field
                 label="Email"
-                placeholder="player@listle.dev"
+                placeholder="player@daydash.dev"
                 type="email"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
@@ -150,9 +156,7 @@ function Field({
 }) {
   return (
     <label className="grid gap-2 text-black">
-      <span className="text-xs font-black uppercase tracking-[0.2em] text-black/60">
-        {label}
-      </span>
+      <span className="text-xs font-black uppercase tracking-[0.2em] text-black/60">{label}</span>
       <Input type={type} placeholder={placeholder} value={value} onChange={onChange} required />
     </label>
   )

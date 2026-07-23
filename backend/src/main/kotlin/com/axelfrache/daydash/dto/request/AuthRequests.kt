@@ -1,21 +1,21 @@
-package com.axelfrache.listle.dto.request
+package com.axelfrache.daydash.dto.request
 
 data class LoginRequest(
     val username: String,
-    val password: String
+    val password: String,
 )
 
 data class RegisterRequest(
     val email: String,
     val username: String,
-    val password: String
+    val password: String,
 )
 
 data class UpdateUsernameRequest(
-    val username: String
+    val username: String,
 )
 
 data class UpdatePasswordRequest(
     val currentPassword: String,
-    val newPassword: String
+    val newPassword: String,
 )

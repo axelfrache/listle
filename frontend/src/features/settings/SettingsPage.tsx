@@ -37,7 +37,10 @@ export function SettingsPage() {
       await updateUsername(username.trim())
       setUsernameNotice({ type: "success", text: "Nom d'utilisateur mis à jour." })
     } catch (error) {
-      setUsernameNotice({ type: "error", text: error instanceof Error ? error.message : "Échec de la mise à jour." })
+      setUsernameNotice({
+        type: "error",
+        text: error instanceof Error ? error.message : "Échec de la mise à jour.",
+      })
     } finally {
       setSavingUsername(false)
     }
@@ -60,7 +63,10 @@ export function SettingsPage() {
       setNewPassword("")
       setConfirmPassword("")
     } catch (error) {
-      setPasswordNotice({ type: "error", text: error instanceof Error ? error.message : "Échec de la mise à jour." })
+      setPasswordNotice({
+        type: "error",
+        text: error instanceof Error ? error.message : "Échec de la mise à jour.",
+      })
     } finally {
       setSavingPassword(false)
     }

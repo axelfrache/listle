@@ -1,4 +1,4 @@
-package com.axelfrache.listle.entity
+package com.axelfrache.daydash.entity
 
 import jakarta.persistence.*
 
@@ -8,13 +8,10 @@ class CategoryWord(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     val id: String? = null,
-
     @Column(nullable = false)
     val categoryId: String,
-
     @Column(nullable = false)
     val label: String,
-
     @Column(nullable = false)
-    val normalizedLabel: String
+    val normalizedLabel: String,
 )

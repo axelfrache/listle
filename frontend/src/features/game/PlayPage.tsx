@@ -113,7 +113,11 @@ export function PlayPage() {
     setSubmitting(true)
     let submission
     try {
-      submission = await submitWord(gameId, input, validWords.map((word) => word.value))
+      submission = await submitWord(
+        gameId,
+        input,
+        validWords.map((word) => word.value),
+      )
     } catch {
       setFeedback({ state: "invalid", label: "Envoi échoué. Réessaie." })
       setSubmitting(false)
@@ -121,10 +125,7 @@ export function PlayPage() {
     }
 
     if (submission.status === "valid") {
-      setWords((current) => [
-        { value: submission.normalized, status: "valid" },
-        ...current,
-      ])
+      setWords((current) => [{ value: submission.normalized, status: "valid" }, ...current])
       setFeedback({ state: "valid", label: `+1 point. ${submission.normalized} accepté.` })
     } else if (submission.status === "duplicate") {
       setWords((current) => [
@@ -174,8 +175,9 @@ export function PlayPage() {
                   </div>
                 </div>
                 <div
-                  className={`self-start border-2 border-black px-5 py-3 text-center shadow-[6px_6px_0_0_#000] sm:self-auto sm:px-6 sm:py-4 sm:shadow-[8px_8px_0_0_#000] ${urgency ? "bg-[#ff7a59] text-black" : "bg-white text-black"
-                    }`}
+                  className={`self-start border-2 border-black px-5 py-3 text-center shadow-[6px_6px_0_0_#000] sm:self-auto sm:px-6 sm:py-4 sm:shadow-[8px_8px_0_0_#000] ${
+                    urgency ? "bg-[#ff7a59] text-black" : "bg-white text-black"
+                  }`}
                 >
                   <div className="flex items-center justify-center gap-2 text-xs font-black uppercase tracking-[0.2em]">
                     <Timer className="size-4" />
@@ -190,25 +192,34 @@ export function PlayPage() {
                   ref={inputRef}
                   value={input}
                   onChange={(event) => setInput(event.target.value)}
-                  placeholder={gameState === "pre-game" ? "En attente du démarrage..." : "Saisis un mot et valide avec Entrée"}
+                  placeholder={
+                    gameState === "pre-game"
+                      ? "En attente du démarrage..."
+                      : "Saisis un mot et valide avec Entrée"
+                  }
                   autoFocus={gameState === "active"}
                   disabled={gameState !== "active" || submitting}
                   className="h-14 text-base font-bold uppercase tracking-[0.06em] sm:h-16 sm:text-lg sm:tracking-[0.08em]"
                 />
                 <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
                   <div
-                    className={`w-full border-2 border-black px-4 py-3 text-sm font-bold shadow-[6px_6px_0_0_#000] sm:w-auto ${feedback.state === "valid"
-                      ? "bg-[#68f2a3] text-black"
-                      : feedback.state === "duplicate"
-                        ? "bg-[#ffe45e] text-black"
-                        : feedback.state === "invalid"
-                          ? "bg-[#ff7a59] text-black"
-                          : "bg-white text-black"
-                      }`}
+                    className={`w-full border-2 border-black px-4 py-3 text-sm font-bold shadow-[6px_6px_0_0_#000] sm:w-auto ${
+                      feedback.state === "valid"
+                        ? "bg-[#68f2a3] text-black"
+                        : feedback.state === "duplicate"
+                          ? "bg-[#ffe45e] text-black"
+                          : feedback.state === "invalid"
+                            ? "bg-[#ff7a59] text-black"
+                            : "bg-white text-black"
+                    }`}
                   >
                     {feedback.label}
                   </div>
-                  <Button size="lg" className="w-full sm:w-auto" disabled={gameState !== "active" || submitting}>
+                  <Button
+                    size="lg"
+                    className="w-full sm:w-auto"
+                    disabled={gameState !== "active" || submitting}
+                  >
                     Valider le mot
                   </Button>
                 </div>
@@ -219,7 +230,9 @@ export function PlayPage() {
                   <div className="text-xs font-black uppercase tracking-[0.2em] text-white/70">
                     Score
                   </div>
-                  <div className="mt-3 font-head text-5xl uppercase sm:text-6xl">{validWords.length}</div>
+                  <div className="mt-3 font-head text-5xl uppercase sm:text-6xl">
+                    {validWords.length}
+                  </div>
                 </div>
                 <div className="border-2 border-black bg-white p-4 shadow-[8px_8px_0_0_#000]">
                   <div className="mb-3 text-xs font-black uppercase tracking-[0.2em] text-black/60">
@@ -234,10 +247,11 @@ export function PlayPage() {
                       words.map((word, index) => (
                         <div
                           key={`${word.value}-${index}`}
-                          className={`border-2 border-black px-3 py-2 text-xs font-black uppercase tracking-[0.1em] shadow-[4px_4px_0_0_#000] sm:text-sm sm:tracking-[0.14em] ${word.status === "valid"
-                            ? "bg-[#68f2a3] text-black"
-                            : "bg-[#ffe45e] text-black"
-                            }`}
+                          className={`border-2 border-black px-3 py-2 text-xs font-black uppercase tracking-[0.1em] shadow-[4px_4px_0_0_#000] sm:text-sm sm:tracking-[0.14em] ${
+                            word.status === "valid"
+                              ? "bg-[#68f2a3] text-black"
+                              : "bg-[#ffe45e] text-black"
+                          }`}
                         >
                           {word.value}
                         </div>
@@ -261,11 +275,20 @@ export function PlayPage() {
               {category.name}
             </div>
             <Dialog.Description className="mt-3 max-w-[36ch] text-sm font-bold text-black/80 sm:text-base">
-              Saisis un maximum de {category.name.toLowerCase()} en 60 secondes. 1 point par mot valide.
+              Saisis un maximum de {category.name.toLowerCase()} en 60 secondes. 1 point par mot
+              valide.
             </Dialog.Description>
           </Dialog.Header>
-          <Dialog.Footer className="border-black bg-[#fff7d6] px-5 py-4 sm:px-8 sm:py-5" position="static">
-            <Button size="lg" className="w-full sm:w-auto" onClick={handleStartGame} disabled={starting}>
+          <Dialog.Footer
+            className="border-black bg-[#fff7d6] px-5 py-4 sm:px-8 sm:py-5"
+            position="static"
+          >
+            <Button
+              size="lg"
+              className="w-full sm:w-auto"
+              onClick={handleStartGame}
+              disabled={starting}
+            >
               Lancer la manche du jour
             </Button>
           </Dialog.Footer>
@@ -283,12 +306,8 @@ export function PlayPage() {
       >
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="border-2 border-black bg-white p-4 shadow-[4px_4px_0_0_#000]">
-            <div className="text-xs font-black uppercase tracking-[0.2em] text-black/60">
-              Score
-            </div>
-            <div className="mt-2 font-head text-4xl uppercase text-black">
-              {result?.score ?? 0}
-            </div>
+            <div className="text-xs font-black uppercase tracking-[0.2em] text-black/60">Score</div>
+            <div className="mt-2 font-head text-4xl uppercase text-black">{result?.score ?? 0}</div>
           </div>
           <div className="border-2 border-black bg-white p-4 shadow-[4px_4px_0_0_#000]">
             <div className="text-xs font-black uppercase tracking-[0.2em] text-black/60">

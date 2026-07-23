@@ -118,7 +118,11 @@ export function NavBar() {
               <div className="mt-3 grid gap-2">
                 {loggedIn ? (
                   <>
-                    <Button asChild variant="outline" className="w-full border-black bg-white text-black">
+                    <Button
+                      asChild
+                      variant="outline"
+                      className="w-full border-black bg-white text-black"
+                    >
                       <Link to="/profile" onClick={() => setMobileOpen(false)}>
                         Mon profil
                       </Link>
@@ -129,7 +133,11 @@ export function NavBar() {
                   </>
                 ) : (
                   <>
-                    <Button asChild variant="outline" className="w-full border-black bg-white text-black">
+                    <Button
+                      asChild
+                      variant="outline"
+                      className="w-full border-black bg-white text-black"
+                    >
                       <Link to="/login" onClick={() => setMobileOpen(false)}>
                         Connexion
                       </Link>

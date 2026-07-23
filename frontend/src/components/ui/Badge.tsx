@@ -16,11 +16,7 @@ interface BadgeProps extends HTMLAttributes<HTMLDivElement> {
   tone?: BadgeTone
 }
 
-export function Badge({
-  className,
-  tone = "neutral",
-  ...props
-}: BadgeProps) {
+export function Badge({ className, tone = "neutral", ...props }: BadgeProps) {
   return (
     <div
       className={cn(

@@ -1,4 +1,4 @@
-const AUTH_TOKEN_KEY = "listle_auth_token"
+const AUTH_TOKEN_KEY = "daydash_auth_token"
 
 export function getAuthToken(): string | null {
   return window.localStorage.getItem(AUTH_TOKEN_KEY)

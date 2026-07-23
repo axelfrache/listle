@@ -1,13 +1,13 @@
-package com.axelfrache.listle.dto.response
+package com.axelfrache.daydash.dto.response
 
 data class StatsOverviewResponse(
     val totalGamesPlayed: Long,
     val averageScore: Double,
     val bestScore: Int,
-    val currentStreak: Int
+    val currentStreak: Int,
 )
 
 data class LeaderboardEntry(
     val username: String,
-    val score: Int
+    val score: Int,
 )
