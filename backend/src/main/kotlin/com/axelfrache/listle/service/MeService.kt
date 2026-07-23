@@ -107,6 +107,7 @@ class MeService(
 
         return MeProfileResponse(
             username = user.username,
+            role = user.role,
             joinedAt = user.createdAt.toLocalDate().toString(),
             tagline = "Joueur Word Clash authentifié.",
             avatarLetters = avatarLetters,

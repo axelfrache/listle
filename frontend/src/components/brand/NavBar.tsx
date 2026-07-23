@@ -4,6 +4,8 @@ import { useState } from "react"
 
 import { Button } from "@/components/retroui/Button"
 import { LogoMark } from "@/components/brand/LogoMark"
+import { useAsyncData } from "@/hooks/useAsyncData"
+import { fetchUserProfile } from "@/lib/api"
 import { clearAuthToken, isAuthenticated } from "@/lib/auth"
 import { cn } from "@/lib/utils"
 
@@ -18,6 +20,12 @@ export function NavBar() {
   const navigate = useNavigate()
   const loggedIn = isAuthenticated()
   const [mobileOpen, setMobileOpen] = useState(false)
+  const { data: profile } = useAsyncData(
+    () => (loggedIn ? fetchUserProfile() : Promise.resolve(null)),
+    [loggedIn],
+  )
+  const navLinks =
+    profile?.role === "ROLE_ADMIN" ? [...links, { to: "/admin", label: "Admin" }] : links
 
   function handleLogout() {
     clearAuthToken()
@@ -62,7 +70,7 @@ export function NavBar() {
         </div>
 
         <div className="mt-3 hidden items-center gap-2 md:flex">
-          {links.map((link) => (
+          {navLinks.map((link) => (
             <NavLink
               key={link.to}
               to={link.to}
@@ -90,7 +98,7 @@ export function NavBar() {
             />
             <div className="absolute inset-x-0 top-full z-40 mt-3 max-h-[calc(100vh-7rem)] overflow-y-auto border-2 border-black bg-[#fff7d6] p-3 shadow-[8px_8px_0_0_#000]">
               <div className="grid grid-cols-1 gap-2">
-                {links.map((link) => (
+                {navLinks.map((link) => (
                   <NavLink
                     key={link.to}
                     to={link.to}

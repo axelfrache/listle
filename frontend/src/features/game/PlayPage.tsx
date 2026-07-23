@@ -34,27 +34,34 @@ export function PlayPage() {
   const [starting, setStarting] = useState(false)
   const [gameId, setGameId] = useState<string | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const deadlineRef = useRef<number | null>(null)
+  const finishingRef = useRef(false)
+  const wordsRef = useRef<GameWord[]>(words)
+  wordsRef.current = words
 
   useEffect(() => {
-    if (!category || gameState !== "active") {
+    if (!category || gameState !== "active" || !gameId || deadlineRef.current === null) {
       return
     }
 
-    if (timeLeft <= 0 && gameId) {
-      setGameState("finished")
-      finalizeGame(
-        gameId,
-        words.filter((word) => word.status === "valid").map((word) => word.value),
-      ).then(setResult)
-      return
+    function tick() {
+      const remaining = Math.max(0, Math.ceil((deadlineRef.current! - Date.now()) / 1000))
+      setTimeLeft(remaining)
+
+      if (remaining <= 0 && !finishingRef.current) {
+        finishingRef.current = true
+        setGameState("finished")
+        finalizeGame(
+          gameId!,
+          wordsRef.current.filter((word) => word.status === "valid").map((word) => word.value),
+        ).then(setResult)
+      }
     }
 
-    const timer = window.setTimeout(() => {
-      setTimeLeft((current) => current - 1)
-    }, 1000)
-
-    return () => window.clearTimeout(timer)
-  }, [category, gameId, gameState, timeLeft, words])
+    tick()
+    const intervalId = window.setInterval(tick, 250)
+    return () => window.clearInterval(intervalId)
+  }, [category, gameId, gameState])
 
   if (loading) {
     return (
@@ -81,6 +88,9 @@ export function PlayPage() {
     setStarting(true)
     try {
       const session = await startGame()
+      finishingRef.current = false
+      deadlineRef.current = Date.now() + ROUND_SECONDS * 1000
+      setTimeLeft(ROUND_SECONDS)
       setGameId(session.gameId)
       setGameState("active")
       window.requestAnimationFrame(() => {
@@ -134,6 +144,8 @@ export function PlayPage() {
   }
 
   function handleReset() {
+    deadlineRef.current = null
+    finishingRef.current = false
     setTimeLeft(ROUND_SECONDS)
     setWords([])
     setInput("")

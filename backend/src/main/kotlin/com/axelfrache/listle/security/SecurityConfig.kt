@@ -80,6 +80,7 @@ class SecurityConfig(
                     "/swagger-resources/**",
                     "/webjars/**"
                 ).permitAll()
+                it.requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                 it.anyRequest().authenticated()
             }
 

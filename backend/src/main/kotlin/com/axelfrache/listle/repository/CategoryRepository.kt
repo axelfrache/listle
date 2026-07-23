@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository
 interface CategoryRepository : JpaRepository<Category, String> {
     fun findBySlug(slug: String): Category?
     fun findByIsActiveTrueOrderBySlugAsc(): List<Category>
+    fun findBySourceTypeOrderBySlugAsc(sourceType: String): List<Category>
 }

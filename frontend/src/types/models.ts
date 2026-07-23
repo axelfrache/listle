@@ -57,6 +57,7 @@ export interface Achievement {
 
 export interface UserProfile {
   username: string
+  role: string
   joinedAt: string
   tagline: string
   avatarLetters: string
@@ -98,4 +99,31 @@ export interface WordSubmissionResult {
   status: WordSubmissionStatus
   normalized: string
   scoreDelta: number
+}
+
+export interface AdminScheduleItem {
+  date: string
+  slug: string
+  name: string
+  wordCount: number
+  frozen: boolean
+}
+
+export interface AdminCategory {
+  slug: string
+  name: string
+  difficulty: number
+  active: boolean
+  source: string | null
+  wordCount: number
+}
+
+export interface CategorySyncResult {
+  slug: string
+  source: string
+  fetched: number
+  added: number
+  skipped: number
+  totalWords: number
+  error?: string | null
 }

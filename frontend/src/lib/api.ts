@@ -1,5 +1,8 @@
 import type {
+  AdminCategory,
+  AdminScheduleItem,
   Category,
+  CategorySyncResult,
   DashboardData,
   GameResult,
   LeaderboardEntry,
@@ -110,6 +113,30 @@ export function fetchUserProfile(): Promise<MeProfileResponse> {
 
 export function startGame(): Promise<GameStartResponse> {
   return requestJson<GameStartResponse>("/games", { method: "POST" }, true)
+}
+
+export function fetchAdminSchedule(days = 14): Promise<AdminScheduleItem[]> {
+  return requestJson<AdminScheduleItem[]>(`/admin/schedule?days=${days}`, undefined, true)
+}
+
+export function fetchAdminCategories(): Promise<AdminCategory[]> {
+  return requestJson<AdminCategory[]>("/admin/categories", undefined, true)
+}
+
+export function syncCategory(slug: string): Promise<CategorySyncResult> {
+  return requestJson<CategorySyncResult>(
+    `/admin/categories/${encodeURIComponent(slug)}/sync`,
+    { method: "POST" },
+    true,
+  )
+}
+
+export function syncAllCategories(): Promise<{
+  synced: number
+  failed: number
+  results: CategorySyncResult[]
+}> {
+  return requestJson("/admin/categories/sync-all", { method: "POST" }, true)
 }
 
 export async function submitWord(

@@ -80,7 +80,7 @@ class GameService(
         if (session.status != GameStatus.ACTIVE) {
             throw GameLogicException("La partie n'est plus active")
         }
-        if (LocalDateTime.now().isAfter(session.startedAt.plusSeconds(60))) {
+        if (LocalDateTime.now().isAfter(session.startedAt.plusSeconds(ROUND_SECONDS + GRACE_SECONDS))) {
             finishGameInternal(session)
             throw GameLogicException("Le temps de la partie est écoulé")
         }
@@ -157,5 +157,10 @@ class GameService(
         session.status = GameStatus.FINISHED
         session.finishedAt = LocalDateTime.now()
         gameSessionRepository.save(session)
+    }
+
+    companion object {
+        private const val ROUND_SECONDS = 60L
+        private const val GRACE_SECONDS = 3L
     }
 }

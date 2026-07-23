@@ -44,6 +44,7 @@ data class MeProfileStatsResponse(
 
 data class MeProfileResponse(
     val username: String,
+    val role: String,
     val joinedAt: String,
     val tagline: String,
     val avatarLetters: String,

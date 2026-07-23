@@ -19,5 +19,14 @@ class Category(
     val difficulty: Int = 1,
 
     @Column(name = "active", nullable = false)
-    val isActive: Boolean = true
+    val isActive: Boolean = true,
+
+    @Column(name = "source_type")
+    val sourceType: String? = null,
+
+    @Column(name = "source_ref")
+    val sourceRef: String? = null,
+
+    @Column(name = "source_min_sitelinks")
+    val sourceMinSitelinks: Int? = null
 )

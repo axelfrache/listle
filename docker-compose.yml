@@ -26,7 +26,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - listle-data:/var/lib/postgresql/data
+      - listle-data:/var/lib/postgresql
     restart: unless-stopped
     networks:
       - listle-network

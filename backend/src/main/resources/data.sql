@@ -30,12 +30,48 @@ VALUES
 ('cinema', 'Cinema', 3, true),
 ('jeux_video', 'Jeux video', 2, true),
 ('sciences', 'Sciences', 3, true),
-('musique', 'Musique', 2, true)
+('musique', 'Musique', 2, true),
+('fromages', 'Fromages', 2, true),
+('elements_chimiques', 'Elements chimiques', 3, true),
+('constellations', 'Constellations', 3, true),
+('danses', 'Danses', 2, true),
+('langues', 'Langues', 2, true),
+('epices', 'Epices', 2, true)
 ) AS v(slug, name, difficulty, active)
 ON CONFLICT (slug) DO UPDATE
 SET name = EXCLUDED.name,
 difficulty = EXCLUDED.difficulty,
 active = EXCLUDED.active;
+
+UPDATE categories AS c SET
+  source_type = 'WIKIDATA',
+  source_ref = s.qid,
+  source_min_sitelinks = s.min_sitelinks
+FROM (
+VALUES
+  ('fruits',      'Q3314483', 25),
+  ('legumes',     'Q11004',   18),
+  ('couleurs',    'Q1075',    22),
+  ('pays',        'Q6256',    20),
+  ('capitales',   'Q5119',    20),
+  ('sports',      'Q349',     30),
+  ('metiers',     'Q28640',   30),
+  ('instruments', 'Q34379',   25),
+  ('vehicules',   'Q42889',   35),
+  ('vetements',   'Q11460',   25),
+  ('boissons',    'Q40050',   20),
+  ('desserts',    'Q182940',  12),
+  ('jeux_video',  'Q7889',    45),
+  ('sciences',    'Q336',     45),
+  ('musique',     'Q188451',  30),
+  ('fromages',           'Q10943', 6),
+  ('elements_chimiques', 'Q11344', 15),
+  ('constellations',     'Q8928',  12),
+  ('danses',             'Q11639', 12),
+  ('langues',            'Q34770', 40),
+  ('epices',             'Q42527', 6)
+) AS s(slug, qid, min_sitelinks)
+WHERE c.slug = s.slug;
 
 INSERT INTO category_words (id, category_id, label, normalized_label)
 SELECT

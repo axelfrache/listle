@@ -170,6 +170,7 @@ const stats: UserStats = {
 
 const profile: UserProfile = {
   username: "TOI",
+  role: "ROLE_USER",
   joinedAt: "2025-11-03",
   tagline: "Chasseur de mots quotidien avec un faible pour les catégories rapides.",
   avatarLetters: "TO",
